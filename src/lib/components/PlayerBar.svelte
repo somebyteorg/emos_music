@@ -519,7 +519,7 @@
 			<div class="chrome-player__lcd">
 				<div class="player-lcd" class:player-lcd--expanded-progress={isProgressHovered} data-testid="player-lcd">
 					{#if playerState.currentTrack?.artworkUrl}
-						<button class="player-lcd__artwork player-lcd__artwork--with-overlay" type="button" aria-label="打开全屏幕播放器" onclick={openFullPlayer}>
+						<button class="player-lcd__artwork" class:player-lcd__artwork--with-overlay={!!playerState.currentTrack} type="button" aria-label="打开全屏幕播放器" disabled={!playerState.currentTrack || undefined} onclick={openFullPlayer}>
 							<img src={playerState.currentTrack.artworkUrl} alt="" width="34" height="34" />
 							<span class="player-lcd__artwork-overlay" aria-hidden="true">
 								<amp-icon class="icon" role="presentation" aria-hidden="true">
@@ -530,14 +530,21 @@
 							</span>
 						</button>
 					{:else}
-						<div class="player-lcd__artwork">
+						<button class="player-lcd__artwork" class:player-lcd__artwork--with-overlay={!!playerState.currentTrack} type="button" aria-label="打开全屏幕播放器" disabled={!playerState.currentTrack || undefined} onclick={openFullPlayer}>
 							<svg class="player-lcd__artwork-placeholder" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
 								<g fill="none" fill-rule="evenodd">
 									<path fill="var(--genericJoeColor)" d="M0 0h100v100H0z"></path>
 									<path fill="var(--playerMissingArtworkIcon)" d={ICONS.MUSIC_NOTE} fill-rule="nonzero"></path>
 								</g>
 							</svg>
-						</div>
+							<span class="player-lcd__artwork-overlay" aria-hidden="true">
+								<amp-icon class="icon" role="presentation" aria-hidden="true">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="87.48 32.45 93.07 93.16">
+										<path d={ICONS.EXPAND}></path>
+									</svg>
+								</amp-icon>
+							</span>
+						</button>
 					{/if}
 					<div class="player-lcd__metadata">
 						<div class="lcd-meta" aria-live="assertive">

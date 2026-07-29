@@ -449,18 +449,8 @@ button.chrome-volume__button {
     pointer-events: none;
 }
 
-.player-lcd__artwork--with-overlay {
-    scale: 1;
-    transition: scale .15s ease-out;
-}
-
-.player-lcd__artwork--with-overlay:has(:focus-visible),
-.player-lcd__artwork--with-overlay:hover {
-    scale: 1.1;
-}
-
 @media (prefers-reduced-motion: reduce) {
-    .player-lcd__artwork--with-overlay {
+    button.player-lcd__artwork--with-overlay {
         transition: none;
     }
 }
@@ -473,14 +463,16 @@ button.chrome-volume__button {
     inset: 0;
     opacity: 0;
     place-items: center;
+    pointer-events: none;
     position: absolute;
     transition: opacity .15s ease-out;
     z-index: var(--z-default);
 }
 
-.player-lcd__artwork-overlay:hover,
-.player-lcd__artwork-overlay:focus-visible {
+.player-lcd__artwork--with-overlay:hover .player-lcd__artwork-overlay,
+.player-lcd__artwork--with-overlay:has(:focus-visible) .player-lcd__artwork-overlay {
     opacity: 1;
+    pointer-events: auto;
 }
 
 .player-lcd__artwork-overlay amp-icon,

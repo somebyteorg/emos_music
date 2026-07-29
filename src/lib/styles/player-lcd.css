@@ -45,10 +45,17 @@
     margin: 0;
     padding: 0;
     position: relative;
+    scale: 1;
 }
 
 button.player-lcd__artwork--with-overlay {
     cursor: pointer;
+    transition: scale .15s ease-out;
+}
+
+button.player-lcd__artwork--with-overlay:hover,
+button.player-lcd__artwork--with-overlay:has(:focus-visible) {
+    scale: 1.1;
 }
 
 .player-lcd__artwork img {

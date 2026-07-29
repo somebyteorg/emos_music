@@ -5,10 +5,6 @@
 	import SectionHeader from '$lib/components/SectionHeader.svelte';
 	import ProductLockupCard from '$lib/components/ProductLockupCard.svelte';
 	import { CATEGORY_GROUPS, CATEGORY_COVERS } from '$lib/utils/constants';
-
-	function showPending(): void {
-		window.alert('待实现');
-	}
 </script>
 
 <div class="section with-top-spacing section--full-width section--category-bricks" aria-label="类别浏览">
@@ -22,7 +18,7 @@
 						<ProductLockupCard
 							imageUrl={CATEGORY_COVERS[name]}
 							{name}
-							onCardClick={showPending}
+							linkHref={`/search?q=${encodeURIComponent(name)}`}
 							showControls={false}
 							placeholderText={name}
 						/>

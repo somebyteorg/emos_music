@@ -25,7 +25,9 @@
 	$effect(() => {
 		const unsub = subscribeEmosAuth((u) => {
 			emosLoggedIn = !!u;
-			initPageData().catch((e) => console.warn('Failed to refresh home page data:', e));
+			if (emosLoggedIn) {
+				initPageData().catch((e) => console.warn('Failed to refresh home page data:', e));
+			}
 		});
 		return unsub;
 	});
@@ -48,21 +50,26 @@
 	<title>EMOS Music</title>
 </svelte:head>
 
-{#if loading}
-	<div class="home-page home-page--loading">
-		<div class="skeleton-grid">
-			{#each Array(10) as _, i}
-				<div class="skeleton-card" style="animation-delay: {i * 60}ms">
-					<div class="skeleton-image"></div>
-					<div class="skeleton-text"></div>
-					<div class="skeleton-text short"></div>
-				</div>
-			{/each}
-		</div>
-	</div>
-{:else if error}
+{#if emosLoggedIn}
 	<div class="home-page">
-		<ErrorState message={error} onRetry={initPageData} />
+		{#if loading}
+			<div class="skeleton-grid">
+				{#each Array(10) as _, i}
+					<div class="skeleton-card" style="animation-delay: {i * 60}ms">
+						<div class="skeleton-image"></div>
+						<div class="skeleton-text"></div>
+						<div class="skeleton-text short"></div>
+					</div>
+				{/each}
+			</div>
+		{:else if error}
+			<ErrorState message={error} onRetry={initPageData} />
+		{:else}
+			<HeaderNav heading="主页" />
+			<HomeSongSection title="可播放歌曲" songs={pageData.topSongs} linkHref="/list/songs/recent/0" hasMore={true} />
+
+			<HomepageSectionSection sections={albumSections(pageData)} />
+		{/if}
 	</div>
 {:else}
 	<div class="home-page">
@@ -80,35 +87,25 @@
 		<section class="home-page__features">
 			<div class="feature-card">
 				<div class="feature-icon">
-					<svg viewBox="0 0 24 24" width="32" height="32"><path d={ICONS.PLAY_SMALL} fill="currentColor"/></svg>
+					<svg viewBox="0 0 24 24" width="32" height="32"><path d={ICONS.HEART_OUTLINE} fill="currentColor"/></svg>
 				</div>
 				<h3>永久公益</h3>
 				<p>自研架构，兼容开放。不设门槛，不玩套路，音乐本该自由流淌。</p>
 			</div>
 			<div class="feature-card">
 				<div class="feature-icon">
-					<svg viewBox="0 0 24 24" width="32" height="32"><path d={ICONS.STAR} fill="currentColor"/></svg>
+					<svg viewBox="0 0 24 24" width="32" height="32"><path d={ICONS.PEOPLE} fill="currentColor"/></svg>
 				</div>
 				<h3>携手共建</h3>
 				<p>社区驱动的内容生态，每一份热爱都会在这里得到回响。</p>
 			</div>
 			<div class="feature-card">
 				<div class="feature-icon">
-					<svg viewBox="0 0 24 24" width="32" height="32"><path d={ICONS.UP_NEXT_QUEUE} fill="currentColor"/></svg>
+					<svg viewBox="0 0 24 24" width="32" height="32"><path d={ICONS.HEADPHONES} fill="currentColor"/></svg>
 				</div>
 				<h3>自由聆听</h3>
 				<p>登录后获取可播放曲库、歌词、播放资源与收藏状态。</p>
 			</div>
 		</section>
-
-		{#if emosLoggedIn}
-			<HeaderNav heading="可播放歌曲" />
-			<HomeSongSection title="可播放歌曲" songs={pageData.topSongs} linkHref="/list/songs/recent/0" hasMore={true} />
-
-			<HomepageSectionSection sections={albumSections(pageData)} />
-		{:else}
-			<HeaderNav heading="可播放歌曲" />
-			<HomeSongSection title="可播放歌曲" songs={pageData.topSongs} linkHref="/list/songs/recent/0" hasMore={true} />
-		{/if}
 	</div>
 {/if}
