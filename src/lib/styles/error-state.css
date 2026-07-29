@@ -1,0 +1,29 @@
+.error-state {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	justify-content: center;
+	min-height: calc(100vh - var(--miniPlayerHeight, 56px) - 52px);
+}
+
+.error-state__message {
+	color: var(--systemSecondary);
+	font: var(--title-3);
+	text-align: center;
+}
+
+.error-state__retry {
+	background: none;
+	border: 1px solid var(--systemQuaternary);
+	border-radius: 1000px;
+	color: var(--keyColor);
+	cursor: pointer;
+	font: var(--body-emphasized);
+	padding: 8px 20px;
+	transition: background .15s;
+}
+
+.error-state__retry:hover {
+	background: var(--systemQuinary);
+}

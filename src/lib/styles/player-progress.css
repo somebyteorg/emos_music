@@ -1,0 +1,566 @@
+.player-lcd__progress {
+    grid-area: progress;
+    padding-block: 4px;
+    width: 100%;
+}
+
+.progress-container {
+    position: relative;
+}
+
+.progress-container:before {
+    content: "";
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s;
+}
+
+.progress {
+    --progress-bar-grid-template-areas: "elapsed . remaining" "scrubber scrubber scrubber";
+    --progress-track-color-elapsed: var(--systemPrimary);
+    --progress-track-color-elapsed-active: var(--systemPrimary);
+    --progress-track-color: var(--systemQuaternary);
+    --thumb-opacity: 0;
+    margin-bottom: 0;
+}
+
+.progress--compact {
+    --progress-bar-grid-template-rows: 0 2px;
+    --progress-bar-grid-row-gap: 0;
+    --progress-track-height: 2px;
+    --progress-track-bg-height: 2px;
+    --progress-thumb-color: transparent;
+    --progress-time: transparent;
+    margin: 2px 0 0;
+}
+
+.progress__scrubber {
+    --mask-radius: calc(var(--progress-track-bg-height, 2px) / 2);
+    height: var(--progress-track-height, 2px);
+    background-image: linear-gradient(90deg, var(--systemPrimary) var(--progress, 0%), var(--systemQuaternary) var(--progress, 0%));
+    background-size: 100% var(--progress-track-bg-height, 2px);
+    background-repeat: no-repeat;
+    border-radius: var(--progress-track-height, 2px);
+    -webkit-mask: radial-gradient(circle, #000 var(--mask-radius), transparent var(--mask-radius)) 0 center/var(--progress-track-bg-height) var(--progress-track-bg-height) no-repeat, radial-gradient(circle, #000 var(--mask-radius), transparent var(--mask-radius)) 100% center/var(--progress-track-bg-height) var(--progress-track-bg-height) no-repeat, linear-gradient(#000, #000) center/calc(100% - var(--progress-track-bg-height)) var(--progress-track-bg-height) no-repeat;
+    mask: radial-gradient(circle, #000 var(--mask-radius), transparent var(--mask-radius)) 0 center/var(--progress-track-bg-height) var(--progress-track-bg-height) no-repeat, radial-gradient(circle, #000 var(--mask-radius), transparent var(--mask-radius)) 100% center/var(--progress-track-bg-height) var(--progress-track-bg-height) no-repeat, linear-gradient(#000, #000) center/calc(100% - var(--progress-track-bg-height)) var(--progress-track-bg-height) no-repeat;
+}
+
+.chrome-player__actions {
+    z-index: calc(var(--z-default) + 1);
+}
+
+.right-content {
+    display: flex;
+    gap: 14px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 9px;
+    color: var(--systemPrimary);
+    margin-inline-end: -4px;
+    --playerPlatterButtonBGFill: transparent;
+    --playerPlatterButtonIconFill: var(--keyColor);
+    --player-action-button-width: 24px;
+}
+
+.lyrics__button-container {
+    display: flex;
+}
+
+.lyrics__button {
+    align-items: center;
+    border-radius: 4px;
+    display: flex;
+    height: 28px;
+    justify-content: center;
+    position: relative;
+    width: var(--player-action-button-width, 32px);
+    z-index: var(--z-default);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--systemSecondary);
+    padding: 0;
+}
+
+.lyrics__button svg {
+    fill: currentColor;
+}
+
+.lyrics__button[aria-expanded="true"] {
+    background: var(--playerPlatterButtonBGFill);
+}
+
+.lyrics__button[aria-expanded="true"] svg {
+    fill: var(--playerPlatterButtonIconFill);
+}
+
+.up-next-queue__button {
+    align-items: center;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    color: var(--systemSecondary);
+    cursor: pointer;
+    display: flex;
+    height: 28px;
+    justify-content: center;
+    padding: 0;
+    position: relative;
+    width: var(--player-action-button-width, 32px);
+    z-index: var(--z-default);
+}
+
+.up-next-queue__button svg {
+    fill: currentColor;
+}
+
+@media (max-width: 999px) {
+    .lyrics__button-container,
+    .up-next-queue__button {
+        display: none;
+    }
+}
+
+.chrome-volume {
+    border-radius: 1000px;
+    height: 28px;
+    position: relative;
+    width: 28px;
+    z-index: var(--z-default);
+}
+
+.chrome-volume__button {
+    --chromeVolumeIconFill: var(--systemPrimary);
+    display: flex;
+    height: 100%;
+    position: relative;
+    z-index: calc(var(--z-default) + 1);
+}
+
+button.chrome-volume__button {
+    align-items: center;
+    background: none;
+    border: none;
+    color: var(--systemPrimary);
+    cursor: pointer;
+    padding: 0;
+}
+
+.chrome-volume__label {
+    position: absolute;
+    clip: rect(1px, 1px, 1px, 1px);
+    border: 0;
+    clip-path: inset(0 0 99.9% 99.9%);
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    white-space: nowrap;
+    width: 1px;
+}
+
+.chrome-volume__icon {
+    height: 24px;
+    width: 24px;
+    fill: var(--chromeVolumeIconFill, var(--systemPrimary));
+}
+
+.chrome-volume__icon .chrome-volume__wave {
+    transition: opacity .1s linear;
+}
+
+.chrome-volume__icon .chrome-volume__wave-hidden {
+    opacity: 0;
+}
+
+.chrome-volume__slider {
+    --progress-track-height: 40px;
+    --volumeWidth: 100px;
+    background-color: var(--systemStandardMediumMaterialSover-default_IC);
+    border-radius: 1000px;
+    display: flex;
+    height: 40px;
+    inset-inline-end: -4px;
+    opacity: 0;
+    padding-inline-start: 10px;
+    pointer-events: none;
+    position: absolute;
+    top: -6px;
+    transform: scaleX(.5);
+    transform-origin: center right;
+    transition: transform .25s, opacity .25s;
+    width: 152px;
+    z-index: calc(var(--z-default) + 1);
+}
+
+@supports (backdrop-filter: blur(10px)) {
+    .chrome-volume__slider {
+        backdrop-filter: blur(60px) saturate(200%);
+        background-color: var(--systemStandardMediumMaterialSover);
+    }
+}
+
+@media (prefers-contrast: more) {
+    .chrome-volume__slider {
+        backdrop-filter: none;
+        background-color: var(--systemStandardMediumMaterialSover-default_IC);
+    }
+}
+
+.app-container.is-dark-theme .chrome-volume__slider {
+    background-color: #141414;
+}
+
+@supports (backdrop-filter: blur(10px)) {
+    .app-container.is-dark-theme .chrome-volume__slider {
+        backdrop-filter: blur(60px) saturate(200%);
+        background-color: rgba(40, 40, 40, .6);
+    }
+}
+
+@media (prefers-contrast: more) {
+    .app-container.is-dark-theme .chrome-volume__slider {
+        backdrop-filter: none;
+        background-color: #141414;
+    }
+}
+
+.app-container.is-light-theme .chrome-volume__slider {
+    background-color: #e6e6e6;
+}
+
+@supports (backdrop-filter: blur(10px)) {
+    .app-container.is-light-theme .chrome-volume__slider {
+        backdrop-filter: blur(60px) saturate(200%);
+        background-color: rgba(246, 246, 246, .6);
+    }
+}
+
+@media (prefers-contrast: more) {
+    .app-container.is-light-theme .chrome-volume__slider {
+        backdrop-filter: none;
+        background-color: #e6e6e6;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chrome-volume__slider {
+        transition: opacity .25s;
+    }
+}
+
+.chrome-volume--expanded .chrome-volume__slider {
+    opacity: 1;
+    pointer-events: all;
+    transform: scaleX(1);
+}
+
+.volume-control {
+    align-items: center;
+    display: flex;
+    width: var(--volumeWidth, 100px);
+}
+
+.chrome-volume__slider .volume-control {
+    height: 100%;
+}
+
+.volume-control__range {
+    --progress-track-bg-height: 6px;
+    --progress-track-color: var(--systemQuaternary);
+    --progress-track-color-active: var(--systemQuaternary);
+    --progress-track-color-elapsed: var(--systemPrimary);
+    --progress-track-color-elapsed-active: var(--systemPrimary);
+
+    --progress: 0%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    display: block;
+    height: var(--progress-track-max-height, auto);
+    margin: 0;
+    max-width: 100%;
+    padding: 0;
+    width: 100%;
+}
+
+.volume-control__range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--progress-thumb-color, #fff);
+    background-position: 50%;
+    border: var(--progress-thumb-border-width, 0) solid var(--progress-thumb-color-outline, transparent);
+    border-radius: var(--progress-thumb-border-radius, 50%);
+    box-shadow: var(--progress-thumb-box-shadow, none);
+    box-sizing: border-box;
+    cursor: pointer;
+    height: var(--progress-thumb-height, 9px);
+    opacity: var(--thumb-opacity, 1);
+    outline: 1px solid var(--progress-thumb-outline-active, transparent);
+    transform: scale(var(--progress-thumb-multiplier-active, 1)) translateY(var(--progress-thumb-offset-hover, var(--progress-thumb-offset, -3px)));
+    transition: transform .1s ease-in-out, opacity .1s ease-in, background-color .1s ease-in;
+    visibility: hidden;
+    width: var(--progress-thumb-width, var(--progress-thumb-height, 9px));
+}
+
+.volume-control__range::-moz-range-thumb {
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--progress-thumb-color, #fff);
+    background-position: 50%;
+    border: var(--progress-thumb-border-width, 0) solid var(--progress-thumb-color-outline, transparent);
+    border-radius: var(--progress-thumb-border-radius, 50%);
+    box-shadow: var(--progress-thumb-box-shadow, none);
+    box-sizing: border-box;
+    cursor: pointer;
+    height: var(--progress-thumb-height, 9px);
+    opacity: var(--thumb-opacity, 1);
+    outline: 1px solid var(--progress-thumb-outline-active, transparent);
+    transform: scale(var(--progress-thumb-multiplier-active, 1)) translateY(var(--progress-thumb-offset, 0));
+    transition: transform .1s ease-in-out, opacity .1s ease-in, background-color .1s ease-in;
+    visibility: hidden;
+    width: var(--progress-thumb-width, var(--progress-thumb-height, 9px));
+}
+
+.volume-control__range::-webkit-slider-runnable-track {
+    --mask-radius: calc(var(--progress-track-bg-height) / 2);
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--progress-track-buffering-bg-color, transparent);
+    background-image: var(--progress-track-buffering-bg-image, linear-gradient(var(--track-direction, 90deg), var(--progress-track-color-elapsed, #e5e5e5) var(--progress), var(--progress-track-color, #414141) var(--progress)));
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: 100% var(--progress-track-bg-height, var(--progress-track-height, 3px));
+    border-color: var(--progress-thumb-color-outline, transparent);
+    border-radius: var(--progress-track-height, 3px);
+    color: transparent;
+    cursor: var(--progress-track-cursor, pointer);
+    display: block;
+    height: var(--progress-track-height, 3px);
+    -webkit-mask: radial-gradient(circle, #000 var(--mask-radius), transparent var(--mask-radius)) 0 center/var(--progress-track-bg-height) var(--progress-track-bg-height) no-repeat, radial-gradient(circle, #000 var(--mask-radius), transparent var(--mask-radius)) 100% center/var(--progress-track-bg-height) var(--progress-track-bg-height) no-repeat, linear-gradient(#000, #000) center/calc(100% - var(--progress-track-bg-height)) var(--progress-track-bg-height) no-repeat;
+    mask: radial-gradient(circle, #000 var(--mask-radius), transparent var(--mask-radius)) 0 center/var(--progress-track-bg-height) var(--progress-track-bg-height) no-repeat, radial-gradient(circle, #000 var(--mask-radius), transparent var(--mask-radius)) 100% center/var(--progress-track-bg-height) var(--progress-track-bg-height) no-repeat, linear-gradient(#000, #000) center/calc(100% - var(--progress-track-bg-height)) var(--progress-track-bg-height) no-repeat;
+}
+
+.volume-control__range::-webkit-slider-runnable-track:focus {
+    outline: none;
+}
+
+.volume-control__range::-moz-range-track {
+    --mask-radius: calc(var(--progress-track-bg-height) / 2);
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--progress-track-buffering-bg-color, transparent);
+    background-image: var(--progress-track-buffering-bg-image, linear-gradient(var(--track-direction, 90deg), var(--progress-track-color-elapsed, #e5e5e5) var(--progress), var(--progress-track-color, #414141) var(--progress)));
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: 100% var(--progress-track-bg-height, var(--progress-track-height, 3px));
+    border-color: var(--progress-thumb-color-outline, transparent);
+    border-radius: var(--progress-track-height, 3px);
+    color: transparent;
+    cursor: var(--progress-track-cursor, pointer);
+    display: block;
+    height: var(--progress-track-height, 3px);
+    mask: radial-gradient(circle, #000 var(--mask-radius), transparent var(--mask-radius)) 0 center/var(--progress-track-bg-height) var(--progress-track-bg-height) no-repeat, radial-gradient(circle, #000 var(--mask-radius), transparent var(--mask-radius)) 100% center/var(--progress-track-bg-height) var(--progress-track-bg-height) no-repeat, linear-gradient(#000, #000) center/calc(100% - var(--progress-track-bg-height)) var(--progress-track-bg-height) no-repeat;
+}
+
+.volume-control__range::-moz-range-track:focus {
+    outline: none;
+}
+
+.volume-control__range::-ms-thumb {
+    appearance: none;
+    background-color: var(--progress-thumb-color, #fff);
+    background-position: 50%;
+    border: var(--progress-thumb-border-width, 0) solid var(--progress-thumb-color-outline, transparent);
+    border-radius: var(--progress-thumb-border-radius, 50%);
+    box-shadow: var(--progress-thumb-box-shadow, none);
+    box-sizing: border-box;
+    cursor: pointer;
+    height: var(--progress-thumb-height, 9px);
+    opacity: var(--thumb-opacity, 1);
+    transform: scale(var(--progress-thumb-multiplier-active, 1)) translateY(var(--progress-thumb-offset, 0));
+    transition: transform .1s ease-in-out, opacity .1s ease-in, background-color .1s ease-in;
+    visibility: hidden;
+    width: var(--progress-thumb-width, var(--progress-thumb-height, 9px));
+}
+
+.volume-control__range::-ms-track {
+    background-color: var(--progress-track-buffering-bg-color, transparent);
+    background-image: var(--progress-track-buffering-bg-image, linear-gradient(var(--track-direction, 90deg), var(--progress-track-color-elapsed, #e5e5e5) var(--progress), var(--progress-track-color, #414141) var(--progress)));
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: 100% var(--progress-track-bg-height, var(--progress-track-height, 3px));
+    border-color: var(--progress-thumb-color-outline, transparent);
+    border-radius: var(--progress-track-height, 3px);
+    color: transparent;
+    cursor: var(--progress-track-cursor, pointer);
+    height: var(--progress-track-height, 3px);
+}
+
+.volume-control__range:active,
+.volume-control__range:focus,
+.volume-control__range:hover {
+    --progress-thumb-color: var(--progress-thumb-color-active, #fff);
+    --progress-thumb-multiplier-active: var(--progress-thumb-multiplier, 1);
+    --progress-thumb-outline-active: var(--progress-thumb-outline-active-alt, var(--progress-thumb-color-outline));
+    --progress-track-color-elapsed: var(--progress-track-color-elapsed-active);
+    --progress-thumb-offset-hover: var(--progress-thumb-offset-hover-override);
+    border: none;
+    outline: none;
+}
+
+.volume-control__range::-moz-focus-inner,
+.volume-control__range::-moz-focus-outer {
+    border: 0;
+    outline: none;
+}
+
+.volume-control__range:active::-webkit-slider-thumb,
+.volume-control__range:focus::-webkit-slider-thumb,
+.volume-control__range:hover::-webkit-slider-thumb {
+    visibility: visible;
+}
+
+.volume-control__range:active::-moz-range-thumb,
+.volume-control__range:focus::-moz-range-thumb,
+.volume-control__range:hover::-moz-range-thumb {
+    visibility: visible;
+}
+
+.volume-control__range:focus-visible {
+    --sk-focus-color: var(--keyColor-focus-color, var(--keyColor, #0071e3));
+    --sk-focus-offset: 2px;
+    outline: 4px solid var(--sk-focus-color, rgba(var(--keyColor-rgb), .6));
+    outline-offset: var(--sk-focus-offset, 1px);
+}
+
+@supports (-moz-appearance: none) {
+    .volume-control__range {
+        height: var(--progress-track-max-height, 3px);
+    }
+}
+
+
+.volume-control__range:disabled {
+    pointer-events: none;
+}
+
+.player-lcd__artwork--with-overlay {
+    scale: 1;
+    transition: scale .15s ease-out;
+}
+
+.player-lcd__artwork--with-overlay:has(:focus-visible),
+.player-lcd__artwork--with-overlay:hover {
+    scale: 1.1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .player-lcd__artwork--with-overlay {
+        transition: none;
+    }
+}
+
+.player-lcd__artwork-overlay {
+    background: rgba(51, 51, 51, .3);
+    border-radius: inherit;
+    color: #fff;
+    display: grid;
+    inset: 0;
+    opacity: 0;
+    place-items: center;
+    position: absolute;
+    transition: opacity .15s ease-out;
+    z-index: var(--z-default);
+}
+
+.player-lcd__artwork-overlay:hover,
+.player-lcd__artwork-overlay:focus-visible {
+    opacity: 1;
+}
+
+.player-lcd__artwork-overlay amp-icon,
+.player-lcd__artwork-overlay .icon {
+    width: 14px;
+}
+
+.progress--expanded {
+    --progress-track-height: 7px;
+    --progress-bar-grid-template-rows: auto 7px;
+    --progress-time: var(--systemPrimary);
+    bottom: -2px;
+    position: absolute;
+    width: 100%;
+}
+
+.progress-container:has(.progress--expanded):before {
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    bottom: -7px;
+    height: 56px;
+    inset-inline: -8px;
+    opacity: 1;
+    position: absolute;
+}
+
+
+.player-lcd--expanded-progress .player-lcd__artwork,
+.player-lcd--expanded-progress .player-lcd__metadata,
+.player-lcd--expanded-progress .player-lcd__after-metadata {
+    opacity: .5;
+}
+
+.progress__elapsed,
+.progress__remaining {
+    color: var(--progress-time, transparent);
+    font: var(--footnote-emphasized);
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+}
+
+.progress__bar {
+    display: grid;
+    grid-template-areas: "elapsed . remaining" "scrubber scrubber scrubber";
+    grid-template-rows: var(--progress-bar-grid-template-rows, auto 2px);
+    grid-row-gap: var(--progress-bar-grid-row-gap, 4px);
+    grid-column-gap: var(--progress-bar-grid-column-gap, 10px);
+    align-items: center;
+}
+
+.progress__elapsed {
+    grid-area: elapsed;
+    justify-self: start;
+}
+
+.progress__remaining {
+    grid-area: remaining;
+    justify-self: end;
+}
+
+.progress__scrubber-track {
+    --mask-radius: calc(var(--progress-track-bg-height, 7px) / 2);
+    grid-area: scrubber;
+    cursor: pointer;
+    position: relative;
+    height: var(--progress-track-height, 7px);
+    background-image: linear-gradient(90deg, var(--systemPrimary) var(--progress, 0%), var(--systemQuaternary) var(--progress, 0%));
+    background-size: 100% var(--progress-track-height, 7px);
+    background-repeat: no-repeat;
+    border-radius: var(--progress-track-height, 7px);
+    -webkit-mask: radial-gradient(circle, #000 var(--mask-radius), transparent var(--mask-radius)) 0 center/var(--progress-track-height) var(--progress-track-height) no-repeat, radial-gradient(circle, #000 var(--mask-radius), transparent var(--mask-radius)) 100% center/var(--progress-track-height) var(--progress-track-height) no-repeat, linear-gradient(#000, #000) center/calc(100% - var(--progress-track-height)) var(--progress-track-height) no-repeat;
+    mask: radial-gradient(circle, #000 var(--mask-radius), transparent var(--mask-radius)) 0 center/var(--progress-track-height) var(--progress-track-height) no-repeat, radial-gradient(circle, #000 var(--mask-radius), transparent var(--mask-radius)) 100% center/var(--progress-track-height) var(--progress-track-height) no-repeat, linear-gradient(#000, #000) center/calc(100% - var(--progress-track-height)) var(--progress-track-height) no-repeat;
+}
+
+.progress__scrubber-track:hover {
+    --progress-track-height: 7px;
+}
+
+.progress--compact .progress__elapsed,
+.progress--compact .progress__remaining {
+    display: none;
+}
+

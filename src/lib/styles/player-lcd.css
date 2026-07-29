@@ -1,0 +1,362 @@
+.chrome-player__lcd {
+    --lcd-marquee-offset: 0px;
+    --marquee-line-padding: 28px;
+    padding-inline: 16px;
+    place-self: center stretch;
+}
+
+.player-lcd {
+    display: grid;
+    gap: 0 8px;
+    grid-template-areas: "artwork metadata after-metadata" "progress progress progress";
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-rows: 34px auto;
+    height: 56px;
+    padding-top: 8px;
+    place-content: center;
+    position: relative;
+    z-index: var(--z-default);
+}
+
+.player-lcd--empty {
+    color: var(--systemTertiary);
+    gap: 0;
+    grid-template-columns: 1fr;
+    padding-top: 0;
+    place-items: center;
+}
+
+.lcd-empty-logo {
+    font: var(--title-3-emphasized);
+    letter-spacing: .05em;
+    color: var(--systemSecondary);
+    opacity: .5;
+}
+
+.player-lcd__artwork {
+    aspect-ratio: 1;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    color: inherit;
+    cursor: default;
+    grid-area: artwork;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+button.player-lcd__artwork--with-overlay {
+    cursor: pointer;
+}
+
+.player-lcd__artwork img {
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    object-fit: cover;
+    display: block;
+}
+
+.player-lcd__artwork-placeholder {
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+
+}
+
+.player-lcd__metadata {
+    --lcd-height: 100%;
+    --lcd-justify-text: start;
+    --lcd-line-padding: 0;
+    --favoriteIconSize: 11px;
+    --favoriteButtonSize: 16px;
+    --menu-position-shift: 0px;
+    align-self: center;
+    grid-area: metadata;
+}
+
+.lcd-meta {
+    align-items: var(--lcd-justify-text, center);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: calc(var(--lcd-height, 44px) - 3px);
+    justify-content: center;
+    max-width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.lcd-meta .lcd-meta {
+    max-width: 100%;
+}
+
+.lcd-meta__primary-container {
+    max-width: 100%;
+    width: 100%;
+}
+
+.lcd-meta__primary-container .lcd-meta {
+    min-width: 0;
+}
+
+.marquee {
+    width: 100%;
+}
+
+.marquee--primary {
+    --paddle-controls-offset-inline-end: 52px;
+    color: var(--lcd-primary-text-color, var(--systemPrimary));
+    font: var(--body-emphasized);
+}
+
+.marquee--primary .marquee-line.inactive,
+.marquee--primary .marquee-line__string-container,
+.marquee--secondary .marquee-line.inactive,
+.marquee--secondary .marquee-line__string-container {
+    --lcd-line-padding: 0;
+}
+
+.marquee--secondary {
+    color: var(--lcd-secondary-text-color, var(--systemSecondary));
+    font: var(--callout-medium);
+    margin-top: 2px;
+    min-height: 13px;
+    position: relative;
+    transition: color .1s ease-in;
+    width: var(--lcd-secondary-width, 100%);
+}
+
+.marquee--secondary .marquee-line-container {
+    height: 21px;
+    position: absolute;
+    top: -5px;
+    width: 100%;
+}
+
+.marquee-line {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: var(--lcd-justify-text, center);
+    overflow: clip;
+    position: relative;
+    text-align: var(--lcd-justify-text, center);
+    text-overflow: none;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.marquee-line.active {
+    justify-content: flex-end;
+}
+
+.marquee-line.inactive {
+    padding: var(--lcd-line-padding, 0 10px);
+}
+
+.marquee-line__text-content {
+    align-items: center;
+    display: flex;
+    gap: .333em;
+}
+
+.marquee-line__fragment {
+    color: inherit;
+    text-decoration: none;
+}
+
+.marquee-line__string-container {
+    min-width: 0;
+    width: auto;
+}
+
+.active .marquee-line__string-container {
+    padding: var(--lcd-line-padding, 0 10px);
+}
+
+.inactive .marquee-line__string-container {
+    padding-inline-end: 0;
+    position: relative;
+}
+
+.active .marquee-line__scrolling-text-chunk {
+    padding-inline-end: var(--marquee-line-padding, 8px);
+}
+
+.marquee-line__scrolling-text-chunk--copy {
+    opacity: 0;
+}
+
+.inactive .marquee-line__scrolling-text-chunk--copy {
+    display: none;
+}
+
+.active.is-animating .marquee-line__scrolling-text-chunk--copy {
+    opacity: 1;
+}
+
+.marquee__menu-slot-container {
+    max-height: 16px;
+    position: absolute;
+    top: 0;
+}
+
+.active .marquee__menu-slot-container {
+    inset-inline-end: var(--menu-position-shift, 26px);
+}
+
+.inactive .marquee__menu-slot-container {
+    inset-inline-start: calc(100% + 4px);
+}
+
+.favorite-badge {
+    margin-inline-start: -4px;
+    position: relative;
+    z-index: calc(var(--z-default, 0) + 1);
+}
+
+@supports (background-image: -webkit-named-image(apple-pay-logo-black)) or (-webkit-appearance: -apple-pay-button) {
+    .favorite-badge {
+        margin-top: -1.5px;
+    }
+}
+
+.player-lcd__metadata:has(:focus-visible),
+.player-lcd__metadata:hover {
+    --favoriteButtonStarOutline: var(--systemTertiary);
+}
+
+.marquee--primary .favorite-button--non-platter {
+    --favoriteIconStarOutline: transparent;
+    --favoriteIconStarFill: transparent;
+}
+
+.marquee--primary .favorite-button--non-platter:focus-visible,
+.marquee--primary .favorite-button--non-platter:hover {
+    --favoriteIconStarOutline: var(--favoriteButtonStarOutline-hover, var(--keyColor));
+}
+
+.marquee--primary .favorite-button--non-platter.is-favorited {
+    --favoriteIconStarFill: var(--favoriteButtonStarFill, var(--keyColor));
+}
+
+
+
+.marquee-line__mask {
+    height: calc(var(--body-line-height)*1em);
+    width: 100%;
+}
+
+.marquee--secondary .marquee-line__mask {
+    box-sizing: border-box;
+    height: 21px;
+    padding: 3px 0 2px;
+}
+
+.active:not(.is-animating) .marquee-line__mask {
+    -webkit-mask: linear-gradient(270deg, transparent var(--lcd-marquee-offset, 35px), #000 calc(var(--lcd-marquee-offset, 35px) + 15px));
+    mask: linear-gradient(270deg, transparent var(--lcd-marquee-offset, 35px), #000 calc(var(--lcd-marquee-offset, 35px) + 15px));
+}
+
+.active.is-animating .marquee-line__mask {
+    -webkit-mask: linear-gradient(90deg, transparent 0, #000 var(--lcd-fade-length-start, 15px), #000 calc(100% - 15px - var(--lcd-marquee-offset, 35px)), transparent calc(100% - var(--lcd-marquee-offset, 35px)));
+    mask: linear-gradient(90deg, transparent 0, #000 var(--lcd-fade-length-start, 15px), #000 calc(100% - 15px - var(--lcd-marquee-offset, 35px)), transparent calc(100% - var(--lcd-marquee-offset, 35px)));
+}
+
+.active.is-animating.is-near-end .marquee-line__mask {
+    --lcd-fade-length-start: 0px;
+}
+
+.marquee--secondary .active:not(.is-animating) .marquee-line__mask {
+    -webkit-mask: linear-gradient(270deg, transparent 0, #000 15px);
+    mask: linear-gradient(270deg, transparent 0, #000 15px);
+}
+
+.marquee--secondary:not(.marquee--badge-mask) .active.is-animating .marquee-line__mask {
+    -webkit-mask: linear-gradient(90deg, transparent 0, #000 var(--lcd-fade-length-start, 15px), #000 calc(100% - 15px - var(--lcd-marquee-offset, 35px)), transparent calc(100% - var(--lcd-marquee-offset, 35px)));
+    mask: linear-gradient(90deg, transparent 0, #000 var(--lcd-fade-length-start, 15px), #000 calc(100% - 15px - var(--lcd-marquee-offset, 35px)), transparent calc(100% - var(--lcd-marquee-offset, 35px)));
+}
+
+.marquee-line__scroller {
+    --marquee-scroll-width: calc((var(--marquee-text-content-width) + var(--marquee-line-padding, 8px)) / 1px);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    height: 15px;
+    z-index: var(--z-default);
+}
+
+.active.is-animating .marquee-line__scroller {
+    animation-delay: 0s;
+    animation-duration: calc(var(--marquee-scroll-width) / 25 * 1.25s);
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+    animation-name: marquee-scroll;
+    animation-play-state: running;
+    animation-timing-function: linear;
+    will-change: transform;
+}
+
+.active.is-infinite .marquee-line__scroller {
+    animation-iteration-count: infinite;
+}
+
+.active.is-paused .marquee-line__scroller {
+    animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+    0% {
+        transform: translate(0);
+    }
+    100% {
+        transform: translate(calc(var(--marquee-scroll-width) * -1px));
+    }
+}
+
+.player-lcd__after-metadata {
+    align-self: center;
+    grid-area: after-metadata;
+}
+
+.after-metadata {
+    --contextMenuEllipsisFillOverride: var(--systemPrimary);
+    --contextMenuButtonSize: 32px;
+    align-items: center;
+    display: flex;
+    gap: 4px;
+    padding-inline-end: 4px;
+}
+
+.lcd-meta__icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-inline-start: 4px;
+}
+
+.lcd-meta__icon--menu {
+    color: var(--keyColor, var(--musicKeyColor, var(--systemBlue)));
+}
+
+.after-metadata .contextual-menu__trigger {
+    cursor: pointer;
+}
+
+.after-metadata .more-button--non-platter {
+    --iconEllipsisFill: var(--contextMenuEllipsisFillOverride, var(--keyColor));
+}
+
+.after-metadata .contextual-menu__trigger:hover .more-button--non-platter,
+.after-metadata .contextual-menu__trigger:focus-visible .more-button--non-platter {
+    --iconEllipsisFill: var(--keyColor);
+}
+
+
+@media (min-width: 1000px) and (max-width: 1259px) {
+    .chrome-volume__slider {
+        --chromeVolumeWidth: clamp(32px, 100%, 70px);
+    }
+}

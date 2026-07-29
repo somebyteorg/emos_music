@@ -1,0 +1,82 @@
+.artwork-component {
+	background-color: var(--override-placeholder-bg-color, var(--placeholder-bg-color, var(--genericJoeColor)));
+	border-radius: inherit;
+	box-sizing: border-box;
+	contain: content;
+	overflow: hidden;
+	position: relative;
+	width: var(--artwork-override-width, 100%);
+	height: var(--artwork-override-height, auto);
+	max-height: var(--artwork-override-max-height, none);
+	max-width: var(--artwork-override-max-width, none);
+	min-height: var(--artwork-override-min-height, 0);
+	min-width: var(--artwork-override-min-width, 0);
+	z-index: var(--z-default);
+}
+.artwork-component--aspect-ratio:not(.artwork-component--downloaded)::before {
+	content: "";
+	display: block;
+	padding-bottom: calc(100% / var(--shelf-aspect-ratio, var(--aspect-ratio, 1)));
+}
+.artwork-component--aspect-ratio:not(.artwork-component--downloaded)::after {
+	content: "";
+	display: block;
+	padding-bottom: calc(100% / var(--shelf-aspect-ratio, var(--aspect-ratio, 1)));
+	min-height: 0;
+	position: absolute;
+}
+.artwork-component--fullwidth { width: 100%; }
+.artwork-component__image {
+	display: block;
+	height: var(--artwork-override-height, 100%);
+	left: 50%;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%) translate(-50%);
+	width: 100%;
+	z-index: var(--z-default);
+	object-fit: fill;
+	object-position: center;
+}
+
+.artwork-component__placeholder {
+	align-items: center;
+	display: flex;
+	height: 100%;
+	justify-content: center;
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	z-index: var(--z-default);
+}
+
+.artwork-component__placeholder-icon {
+	height: 50%;
+	width: 50%;
+	opacity: 0.5;
+}
+
+.container-style { border-radius: var(--global-border-radius-large, 10px); }
+
+.container-style::after,
+.artwork-component--has-borders::after {
+	border-radius: inherit;
+	box-shadow: inset .5px .5px var(--containerInnerStroke, rgba(0, 0, 0, .1)), inset .5px -.5px var(--containerInnerStroke, rgba(0, 0, 0, .1)), inset -.5px .5px var(--containerInnerStroke, rgba(0, 0, 0, .1)), inset -.5px -.5px var(--containerInnerStroke, rgba(0, 0, 0, .1));
+	content: "";
+	display: block;
+	height: 0;
+	max-height: 100%;
+	max-width: 100%;
+	min-height: 100%;
+	min-width: 100%;
+	opacity: .1;
+	pointer-events: none;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: calc(var(--z-default) + 1);
+}
+@media (prefers-color-scheme: dark) {
+	.container-style::after,
+	.artwork-component--has-borders::after { opacity: .25; }
+}

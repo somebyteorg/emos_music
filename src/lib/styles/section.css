@@ -1,0 +1,107 @@
+
+.section:not(:first-of-type) { padding-top: 12px; }
+.section:has(.cell-container) { padding-top: 19px; }
+@media (min-width: 1000px) {
+	.section:has(.cell-container) { padding-top: 0; }
+}
+.section.with-top-spacing { padding-top: 32px; }
+.with-bottom-spacing { padding-bottom: 32px; }
+.section:has(.songs-list):not(.with-top-spacing) { padding-top: 0; }
+
+.spacer-wrapper { padding-top: 16px; width: 100%; }
+
+
+@media (min-width: 484px) {
+	.section--full-width {
+		margin-inline-start: calc(var(--web-navigation-width) * -1);
+		padding-inline-start: var(--web-navigation-width);
+	}
+}
+
+@media (min-width: 1260px) and (prefers-reduced-motion: no-preference) {
+	.section--full-width .section-content {
+		transition: padding-inline-end .3s cubic-bezier(.215, .61, .355, 1);
+	}
+}
+
+.section--alternate {
+	background-color: var(--opaqueShelfBG);
+}
+
+.section-header {
+	align-items: center;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.section-header:not(.is-panel-header) {
+	margin: 0 var(--bodyGutter) 13px;
+}
+
+.header-title-wrapper { flex: 1; }
+
+.title-link {
+	cursor: pointer;
+	color: var(--header-title-color, var(--systemPrimary));
+	text-decoration: none;
+}
+
+.title-link:hover {
+	color: var(--header-title-color, var(--systemPrimary));
+	text-decoration: none;
+}
+
+.header-title-wrapper .chevron {
+	display: inline-block;
+	height: var(--header-title-chevron-size, 12px);
+	fill: var(--header-title-chevron-color, var(--dropdownLightGrayIcon));
+	margin-inline-start: 2px;
+	vertical-align: middle;
+}
+
+.title__button { text-align: start; text-decoration: none; }
+
+.section-title {
+	color: var(--header-title-color, var(--systemPrimary));
+	display: inline-block;
+	font: var(--header-title-font, var(--title-2-emphasized));
+}
+
+html[dir=rtl] .header-title-wrapper .chevron {
+	transform: scaleX(-1);
+}
+
+.section-separator-line {
+	border-bottom: var(--keyline-border-style);
+	margin: 0 var(--bodyGutter);
+}
+
+
+.section.with-pinned-item {
+	display: flex;
+}
+
+@media (max-width: 999px) {
+	.section.with-pinned-item {
+		display: block;
+	}
+}
+
+@media (min-width: 1000px) {
+	.section.with-pinned-item .section-content {
+		flex: 1;
+		-webkit-margin-start: -20px;
+		-moz-margin-start: -20px;
+		margin-inline-start: -20px;
+		min-width: 0;
+	}
+}
+
+.pinned-item {
+	flex-shrink: 0;
+
+}
+
+
+
+

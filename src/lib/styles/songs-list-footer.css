@@ -1,0 +1,58 @@
+.section:has(.songs-list),
+.section:has(.tracklist-footer) {
+	--songs-list-row-border-radius: 12px;
+	position: relative;
+	z-index: var(--z-default);
+}
+
+.tracklist-footer {
+	margin: 0 var(--bodyGutter);
+	padding-bottom: 43px;
+	padding-inline-start: 12px;
+}
+
+@media (min-width: 1000px) {
+	.tracklist-footer {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		padding-bottom: 53px;
+	}
+}
+
+.section .tracklist-footer {
+	margin-top: -12px;
+}
+
+.footer-body {
+	color: var(--systemSecondary);
+	font: var(--body);
+	max-width: 440px;
+	position: relative;
+}
+
+@media (min-width: 1260px) {
+	.footer-body {
+		max-width: 540px;
+	}
+}
+
+@media (min-width: 1580px) {
+	.footer-body {
+		max-width: 640px;
+	}
+}
+
+
+.tracklist-footer--playlist .footer-body {
+	margin-top: 45px;
+}
+
+.tracklist-footer--album .footer-body {
+	font: var(--body-tall);
+	margin-top: 45px;
+}
+
+.tracklist-footer--album .footer-description {
+	white-space: pre-wrap;
+}

@@ -1,0 +1,17 @@
+.multiline-clamp {
+	--mc-line-height: 1.30769;
+	display: block;
+	position: relative;
+}
+.multiline-clamp--overflow { overflow: hidden; }
+.multiline-clamp--with-badge { display: flex; }
+.multiline-clamp__text {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: var(--mc-lineClamp, 2);
+	line-clamp: var(--mc-lineClamp, 2);
+	overflow: hidden;
+	flex: 1;
+	min-width: 0;
+}
+.multiline-clamp__badge { flex-shrink: 0; }

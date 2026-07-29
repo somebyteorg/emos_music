@@ -1,0 +1,20 @@
+.empty-state {
+	align-items: center;
+	color: var(--systemSecondary);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-height: calc(100vh - var(--miniPlayerHeight, 56px) - 52px);
+	text-align: center;
+	z-index: 1;
+}
+
+.empty-state__description {
+	font: var(--body-emphasized);
+}
+
+.empty-state__icon svg {
+	fill: var(--systemSecondary);
+	height: 55px;
+	width: 55px;
+}

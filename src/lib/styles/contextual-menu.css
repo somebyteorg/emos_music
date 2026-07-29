@@ -1,0 +1,439 @@
+amp-contextual-menu {
+    --ctxmenu-item-bg: var(--systemStandardThickMaterialSover-default_IC);
+    --ctxmenu-item-bg-hover: var(--systemQuinary);
+    --borderRule: var(--labelDivider);
+    --ctxmenu-item-min-width: 185px;
+    --ctxmenu-z-index: var(--z-contextual-menus);
+    --ctxmenu-scrim-z-index: calc(var(--z-contextual-menus) - 1);
+    --keyColor-focus-color: rgba(var(--keyColor-rgb), .6);
+    position: relative;
+}
+
+.scrollable-page[aria-hidden="true"] {
+    overflow-y: hidden;
+}
+
+@media (max-width: 483px) {
+    .scrollable-page[aria-hidden="true"] {
+        overflow-y: visible;
+    }
+    body.contextual-menu-open {
+        overflow: hidden !important;
+    }
+}
+
+.contextual-menu-scrim {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: var(--ctxmenu-scrim-z-index-override, var(--ctxmenu-scrim-z-index, 4));
+    top: 0;
+    left: 0;
+    font-size: 0;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    appearance: none;
+    padding: 0;
+    margin: 0;
+}
+
+.contextual-menu-scrim::-moz-focus-inner {
+    border: 0;
+}
+
+@media (max-width: 483px) {
+    .contextual-menu-scrim {
+        background-color: var(--modalScrimColor, rgba(0, 0, 0, .4));
+    }
+}
+
+.contextual-menu__overlay {
+    display: block;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple Color Emoji", "SF Pro", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+.contextual-menu__overlay:focus {
+    outline: none;
+}
+
+.contextual-menu__list {
+    min-width: var(--ctxmenu-item-min-width, 185px);
+    max-width: 100%;
+    max-height: var(--ctxmenu-submenu-max-height, auto);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+@media (max-width: 483px) {
+    .contextual-menu__list {
+        width: 100%;
+        min-width: unset;
+        max-width: unset;
+        max-height: calc(100vh - 25px * 2 - var(--miniPlayerHeight, 56px));
+    }
+}
+
+.contextual-menu {
+    padding: 0;
+    min-width: var(--ctxmenu-item-min-width, 185px);
+    max-width: var(--ctxmenu-item-max-width, 350px);
+    display: block;
+    position: fixed;
+    z-index: var(--ctxmenu-z-index-override, var(--ctxmenu-z-index, 5));
+    top: var(--ctxmenu-top);
+    bottom: var(--ctxmenu-bottom);
+    left: var(--ctxmenu-left, 0);
+    border-radius: 6px;
+}
+
+.contextual-menu[aria-hidden="true"] {
+    display: none;
+    pointer-events: none;
+}
+
+.contextual-menu::before {
+    background-color: var(--systemStandardThickMaterialSover-default_IC);
+    content: "";
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .2), 0 8px 40px var(--dialogShadowColor, rgba(0, 0, 0, .3));
+}
+
+@supports (backdrop-filter: blur(10px)) {
+    .contextual-menu::before {
+        background-color: var(--systemStandardThickMaterialSover);
+        backdrop-filter: blur(60px) saturate(210%);
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .contextual-menu::before {
+            backdrop-filter: blur(60px) saturate(220%);
+        }
+    }
+}
+
+@media (prefers-contrast: more) {
+    .contextual-menu::before {
+        backdrop-filter: none;
+        background-color: var(--systemStandardThickMaterialSover-default_IC);
+    }
+}
+
+@media (max-width: 483px) {
+    .contextual-menu {
+        width: 270px;
+        min-width: unset;
+        max-width: unset;
+        max-height: calc(100vh - 25px * 2 - var(--miniPlayerHeight, 56px));
+        transition: transform .2s ease;
+    }
+
+    .contextual-menu:not(.contextual-menu--in-submenu) {
+        top: auto !important;
+        right: calc(50vw - 270px / 2) !important;
+        bottom: calc(25px + var(--miniPlayerHeight, 56px)) !important;
+        left: calc(50vw - 270px / 2) !important;
+    }
+}
+
+.contextual-menu-item {
+    margin: 0;
+    padding: 0;
+    position: static;
+    color: var(--systemPrimary);
+    list-style-type: none;
+}
+
+.contextual-menu-item:focus,
+.contextual-menu-item:focus-visible {
+    outline: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .contextual-menu-item:focus-within {
+        background-color: var(--ctxmenu-item-bg-hover);
+    }
+}
+
+.contextual-menu-item__option-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.contextual-menu-item__option-text {
+    max-width: 100%;
+    display: block;
+    overflow: hidden;
+    text-align: start;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.contextual-menu-item__option-text--after {
+    position: absolute;
+    transition-property: opacity;
+    transition-duration: 1s;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.contextual-menu-item__icon-container {
+    width: 16px;
+    height: 16px;
+}
+
+.contextual-menu-item__icon-container svg {
+    width: inherit;
+    height: inherit;
+    display: block;
+    fill: currentColor;
+}
+
+.contextual-menu-item > button {
+    margin: 0;
+    padding: 0 10px;
+    display: flex;
+    border: 0;
+    background-color: transparent;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.2307692308;
+    font-weight: 400;
+    letter-spacing: 0;
+    width: 100%;
+    height: 32px;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--systemPrimary);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.contextual-menu-item > button::-moz-focus-inner {
+    border: 0;
+}
+
+.contextual-menu-item > button:active {
+    background-color: var(--ctxmenu-item-bg-hover);
+}
+
+.contextual-menu-item > button:focus-visible {
+    outline: 4px solid var(--keyColor-focus-color, var(--keyColor, #0071e3));
+    outline-offset: -4px;
+    background-color: var(--ctxmenu-item-bg-hover);
+    box-shadow: none;
+}
+
+.contextual-menu-item > button[disabled],
+.contextual-menu-item > button:disabled {
+    opacity: .3;
+    cursor: default;
+    pointer-events: none;
+}
+
+@media (max-width: 483px) {
+    .contextual-menu-item > button {
+        font-size: 17px;
+        line-height: 1.2941176471;
+        padding: 0 16px;
+        height: 45px;
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .contextual-menu-item > button:hover,
+    .contextual-menu-item > button:focus-visible {
+        background-color: var(--ctxmenu-item-bg-hover);
+    }
+}
+
+.contextual-menu-item + .contextual-menu-item > button {
+    border-top: .5px solid var(--labelDivider);
+}
+
+.contextual-menu-item:first-child > button {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.contextual-menu-item:last-child > button {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.contextual-menu__group {
+    border-top: 2px solid var(--labelDivider);
+}
+
+.contextual-menu__group .contextual-menu__group-title {
+    font-size: 11px;
+    line-height: 1.2727272727;
+    font-weight: 600;
+    letter-spacing: 0;
+    padding: 6px 10px 2px 10px;
+    display: block;
+    color: var(--systemTertiary);
+}
+
+@media (max-width: 483px) {
+    .contextual-menu__group .contextual-menu__group-title {
+        font-size: 15px;
+        line-height: 1.3333833333;
+        padding: 10px 16px 2px 16px;
+    }
+}
+
+.contextual-menu__group .contextual-menu__group-title + .contextual-menu-item > button {
+    border-top: none;
+}
+
+.contextual-menu-item--successful .contextual-menu-item__option-text:not(.contextual-menu-item__option-text--after) {
+    opacity: 0;
+}
+
+.contextual-menu-item--successful .contextual-menu-item__option-text--after {
+    opacity: 1;
+}
+
+.contextual-menu-item__icon-container--hide {
+    opacity: 0;
+}
+
+.contextual-menu-item__disclosure {
+    width: 8px;
+    height: 14px;
+    color: var(--systemSecondary);
+    flex-shrink: 0;
+}
+
+.contextual-menu-item__disclosure svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.contextual-menu-item--nested {
+    min-width: var(--ctxmenu-submenu-min-width, auto);
+    max-width: var(--ctxmenu-submenu-max-width, auto);
+    max-height: var(--ctxmenu-submenu-max-height, auto);
+    position: absolute;
+    top: var(--ctxmenu-submenu-top, auto);
+    right: var(--ctxmenu-submenu-right);
+    bottom: var(--ctxmenu-submenu-bottom);
+    left: var(--ctxmenu-submenu-left, auto);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .15s ease;
+}
+
+.contextual-menu-item--nested__active {
+    display: block;
+    opacity: 1;
+    pointer-events: unset;
+}
+
+.contextual-menu--in-submenu {
+    position: relative;
+    top: unset;
+    right: unset;
+    bottom: unset;
+    left: unset;
+}
+
+.contextual-menu__subhead {
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.contextual-menu__subhead-back {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    appearance: none;
+    padding: 6px 10px;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.2307692308;
+    color: var(--systemSecondary);
+    -webkit-tap-highlight-color: transparent;
+    width: 100%;
+    height: 32px;
+}
+
+.contextual-menu__subhead-back svg {
+    width: 8px;
+    height: 14px;
+    display: block;
+    transform: scaleX(1);
+}
+
+@media (min-width: 484px) {
+    .contextual-menu__subhead {
+        display: none;
+    }
+}
+
+@media (max-width: 483px) {
+    .contextual-menu__subhead-back {
+        font-size: 17px;
+        line-height: 1.2941176471;
+        padding: 6px 16px;
+        height: 45px;
+    }
+}
+
+.contextual-menu--has-active-submenu {
+    overflow: hidden;
+}
+
+.contextual-menu--has-active-submenu .contextual-menu__list {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+@media (max-width: 483px) {
+    .contextual-menu--has-active-submenu {
+        transform: translateX(-100vw);
+    }
+
+    .contextual-menu-item--nested {
+        position: fixed;
+        top: auto !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        transform: translateX(100%);
+        transition: transform .2s ease, opacity .15s ease;
+    }
+
+    .contextual-menu-item--nested__active {
+        transform: translateX(0);
+    }
+
+    .contextual-menu--in-submenu {
+        position: fixed;
+        top: auto !important;
+         bottom: calc(25px + var(--miniPlayerHeight, 56px)) !important;
+        left: calc(50vw - 270px / 2) !important;
+        right: calc(50vw - 270px / 2) !important;
+        width: 270px;
+        transition: transform .2s ease;
+    }
+}

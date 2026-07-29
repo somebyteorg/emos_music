@@ -1,0 +1,12 @@
+.home-page { padding-bottom: 64px; }
+.home-page__hero { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 40vh; text-align: center; padding: var(--bodyGutter); padding-top: 48px; }
+.home-page__title { font: var(--title-1-emphasized); color: var(--systemPrimary); margin-bottom: 12px; }
+.home-page__subtitle { font: var(--title-3); color: var(--systemSecondary); margin-bottom: 32px; line-height: 1.5; max-width: 420px; }
+.home-page__actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.home-page__actions .signin--expanded { max-width: 240px; }
+
+.home-page__features { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 0 var(--bodyGutter) 48px; max-width: 1680px; }
+.feature-card { background-color: var(--shelfBG); border-radius: var(--global-border-radius-large, 10px); padding: 24px; display: flex; flex-direction: column; gap: 8px; }
+.feature-card__icon { color: var(--systemSecondary); line-height: 0; }
+.feature-card__title { font: var(--title-3-emphasized); color: var(--systemPrimary); }
+.feature-card__desc { font: var(--body); color: var(--systemSecondary); line-height: 1.4; }

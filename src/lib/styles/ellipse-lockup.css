@@ -1,0 +1,76 @@
+.ellipse-lockup-wrapper {
+	--linkHoverTextDecoration: none;
+}
+
+.ellipse-lockup-wrapper a {
+	display: block;
+}
+
+.ellipse-lockup {
+	text-align: center;
+}
+
+.ellipse-lockup .artwork {
+	border-radius: 50%;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, .01), 0 2px 2px rgba(0, 0, 0, .01), 0 4px 4px rgba(0, 0, 0, .02), 0 8px 8px rgba(0, 0, 0, .03), 0 14px 14px rgba(0, 0, 0, .03);
+	overflow: hidden;
+	position: relative;
+	z-index: var(--z-default);
+}
+
+.ellipse-lockup .artwork img {
+	border-radius: 50%;
+	display: block;
+	width: 100%;
+	aspect-ratio: 1;
+	object-fit: cover;
+}
+
+.ellipse-lockup .text-container:not(:has(.caption)) {
+	margin-top: 8px;
+}
+
+.ellipse-lockup .title {
+	color: var(--systemPrimary);
+	display: -webkit-box;
+	font: var(--callout-tall, var(--callout));
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.ellipse-lockup .subtitle {
+	color: var(--systemSecondary);
+	display: -webkit-box;
+	font: var(--callout);
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.ellipse-lockup .artwork-fallback {
+	align-items: center;
+	aspect-ratio: 1;
+	background-color: var(--genericJoeColor, var(--systemQuinary));
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+.ellipse-lockup .artwork-fallback svg {
+	fill: #99999d;
+	height: 40%;
+	width: 40%;
+}
+
+.grid--artists-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+	gap: 24px 20px;
+	list-style: none;
+	margin: 0 var(--bodyGutter) 32px;
+	padding: 0;
+}

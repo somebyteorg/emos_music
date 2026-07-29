@@ -1,0 +1,86 @@
+.vertical-video-wrapper { height: 100%; }
+.vertical-video { height: 100%; min-width: 0; }
+.vertical-video.interactive { cursor: pointer; }
+
+.vertical-video__artwork {
+	border-radius: var(--global-border-radius-medium, 7px);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, .01), 0 2px 2px rgba(0, 0, 0, .01), 0 4px 4px rgba(0, 0, 0, .02), 0 8px 8px rgba(0, 0, 0, .03), 0 14px 14px rgba(0, 0, 0, .03);
+	position: relative;
+	z-index: var(--z-default);
+}
+.vertical-video__artwork:after {
+	background-color: rgba(51, 51, 51, .3);
+	border-radius: inherit;
+	content: "";
+	height: 100%;
+	left: 0;
+	opacity: var(--scrimOpacity, 0);
+	position: absolute;
+	top: 0;
+	transition: opacity .1s ease-in;
+	width: 100%;
+	z-index: 1;
+}
+@media (hover: hover) and (pointer: fine) {
+	.vertical-video.interactive { --scrimOpacity: 0; }
+	.vertical-video.interactive:hover,
+	.vertical-video.interactive:focus-within,
+	.vertical-video.interactive.has-open-menu { --scrimOpacity: 1; }
+	@supports selector(:has(:focus-visible)) {
+		.vertical-video.interactive:focus-within { --scrimOpacity: 0; }
+		.vertical-video.interactive:hover,
+		.vertical-video.interactive:has(:focus-visible),
+		.vertical-video.interactive.has-open-menu { --scrimOpacity: 1; }
+	}
+}
+
+.vertical-video__controls {
+	border-radius: inherit;
+	height: 100%;
+	opacity: var(--scrimOpacity, 0);
+	position: absolute;
+	top: 0;
+	transition: var(--global-transition);
+	width: 100%;
+	z-index: calc(var(--z-default) + 1);
+}
+.vertical-video__link {
+	color: transparent;
+	display: block;
+	height: 100%;
+	position: absolute;
+	width: 100%;
+	z-index: var(--z-default);
+}
+.vertical-video__play-button {
+	bottom: 10px;
+	inset-inline-start: 10px;
+	line-height: 0;
+	position: absolute;
+	z-index: var(--z-default);
+}
+.vertical-video__context-button {
+	bottom: 10px;
+	inset-inline-end: 10px;
+	line-height: 0;
+	position: absolute;
+	z-index: var(--z-default);
+}
+
+.vertical-video__artwork .artwork-component__image { object-fit: cover; }
+
+.vertical-video__content { margin-top: 6px; }
+.vertical-video__headline {
+	color: var(--systemPrimary);
+	font: var(--subhead-emphasized);
+}
+.vertical-video__title {
+	color: var(--systemPrimary);
+	font: var(--subhead-emphasized);
+	text-decoration: none;
+}
+.vertical-video__subtitle { margin-top: 1px; }
+.vertical-video__subtitle-text {
+	color: var(--systemSecondary);
+	font: var(--callout);
+}

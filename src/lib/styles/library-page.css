@@ -1,0 +1,31 @@
+.library-page__empty {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 80px 0 120px;
+}
+
+.library-page__empty-text {
+	color: var(--systemSecondary);
+	font: var(--body);
+	margin-bottom: 20px;
+}
+
+.library-page__login-button {
+	background: var(--keyColor);
+	border: none;
+	border-radius: 980px;
+	color: #fff;
+	cursor: pointer;
+	font: var(--body-emphasized);
+	min-height: 36px;
+	min-width: 120px;
+	padding: 8px 20px;
+}
+
+.library-page__login-button:hover {
+	opacity: 0.8;
+}
+
+.library-page__content { padding-top: 12px; }

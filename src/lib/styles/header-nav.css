@@ -1,0 +1,36 @@
+.header-nav {
+	align-items: end;
+	display: grid;
+	grid-template-columns: 1fr auto;
+	margin-inline-end: var(--bodyGutter);
+	margin-inline-start: var(--bodyGutter);
+	padding-bottom: 0.05px;
+	padding-top: 32px;
+}
+
+.header-nav--with-separator {
+	border-bottom: var(--keyline-border-style);
+	padding-bottom: 8px;
+}
+
+.header-nav__heading {
+	color: var(--systemPrimary);
+	font: var(--header-emphasized);
+	grid-column: 1;
+	grid-row: 1;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.header-nav__action {
+	grid-column: 2;
+	grid-row: 1;
+	inset-inline-end: 0;
+}
+
+.header-nav--header-type-a:not(.header-nav--with-separator) + .section {
+	padding-top: 28px;
+}

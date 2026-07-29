@@ -1,0 +1,242 @@
+.shelf-grid {
+	box-sizing: border-box;
+	padding: 0 var(--shelfGridPaddingInline, var(--bodyGutter));
+	position: relative;
+	width: 100%;
+	z-index: var(--z-default);
+}
+
+.shelf {
+	padding-bottom: 32px;
+}
+
+@media (max-width: 999px) {
+.shelf-grid {
+		padding-inline-end: 0;
+		padding-inline-start: 0;
+	}
+}
+
+.shelf-grid--full-width {
+	padding-inline-start: var(--shelfGridPaddingInline, var(--bodyGutter));
+}
+
+
+.shelf-grid__body {
+	box-sizing: content-box;
+	margin-inline-end: -2px;
+	margin-inline-start: -2px;
+	overflow: visible;
+	padding-inline-end: 2px;
+	padding-inline-start: 2px;
+	width: 100%;
+}
+
+.shelf-grid__list {
+	box-sizing: border-box;
+	display: grid;
+	grid-auto-flow: column;
+	list-style: none;
+	margin: 0;
+	overflow-x: auto;
+	overflow-y: hidden;
+	padding: 0;
+	-webkit-overflow-scrolling: touch;
+	margin-bottom: calc(var(--override-shelf-overflow-bleed-bottom, var(--overflowBleedBottom, 15px)) * -1);
+	margin-top: calc(var(--override-shelf-overflow-bleed-top, var(--overflowBleedTop, 15px)) * -1);
+	overscroll-behavior-x: none;
+	padding-bottom: var(--override-shelf-overflow-bleed-bottom, var(--overflowBleedBottom, 15px));
+	padding-top: var(--override-shelf-overflow-bleed-top, var(--overflowBleedTop, 15px));
+	scroll-behavior: smooth;
+	scroll-snap-type: x mandatory;
+	scrollbar-width: none;
+}
+
+@media (max-width: 999px) {
+	.shelf-grid__list {
+		margin-inline-end: 0;
+		margin-inline-start: 0;
+		padding-inline-end: var(--shelfGridGutterWidth, 25px);
+		padding-inline-start: var(--shelfGridGutterWidth, 25px);
+		scroll-padding-inline-start: var(--shelfGridGutterWidth, 25px);
+		width: 100%;
+	}
+}
+
+.shelf-grid--full-width .shelf-grid__list {
+	margin-inline-start: calc(var(--shelfGridGutterWidth, 25px) * -1);
+	padding-inline-start: var(--shelfGridGutterWidth, 25px);
+	scroll-padding-inline-start: var(--shelfGridGutterWidth, 25px);
+	width: calc(100% + var(--shelfGridGutterWidth, 25px));
+}
+
+@media (min-width: 1000px) {
+	.shelf-grid__list {
+		margin-inline-end: calc(var(--standard-lockup-shadow-offset, 15px) * -1);
+		margin-inline-start: calc(var(--standard-lockup-shadow-offset, 15px) * -1);
+		-webkit-mask: linear-gradient(90deg, transparent 0, #000 var(--standard-lockup-shadow-offset, 15px), #000 calc(100% - var(--standard-lockup-shadow-offset, 15px)), transparent 100%);
+		mask: linear-gradient(90deg, transparent 0, #000 var(--standard-lockup-shadow-offset, 15px), #000 calc(100% - var(--standard-lockup-shadow-offset, 15px)), transparent 100%);
+		padding-inline-end: var(--standard-lockup-shadow-offset, 15px);
+		padding-inline-start: var(--standard-lockup-shadow-offset, 15px);
+		width: calc(100% + 30px);
+	}
+
+	.shelf-grid--full-width .shelf-grid__list {
+		margin-inline: 0;
+		-webkit-mask: unset;
+		mask: unset;
+		padding-inline: var(--bodyGutter);
+		scroll-padding-inline-start: var(--bodyGutter);
+		width: 100%;
+	}
+}
+
+@media (min-width: 484px) {
+	.shelf-grid--full-width .shelf-grid__list {
+		--shelf-inline-offset: calc(var(--web-navigation-width) + var(--bodyGutter));
+		margin-inline-start: calc(var(--shelf-inline-offset) * -1);
+		padding-inline-start: var(--shelf-inline-offset);
+		scroll-padding-inline-start: var(--shelf-inline-offset);
+		width: 100dvw;
+	}
+
+	.app-container.is-drawer-open .shelf-grid--full-width .shelf-grid__list {
+		width: calc(100dvw - 300px);
+	}
+}
+
+.shelf-grid__list::-webkit-scrollbar {
+	display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.shelf-grid__list {
+		scroll-behavior: auto;
+	}
+}
+
+.shelf-grid__list-item {
+	contain: content;
+	min-width: 0;
+	margin-top: calc(var(--override-shelf-overflow-bleed-top, var(--standard-lockup-shadow-offset, 15px)) * -1);
+	margin-inline-end: calc(var(--standard-lockup-shadow-offset, 15px) * -1);
+	margin-bottom: calc(var(--override-shelf-overflow-bleed-bottom, var(--standard-lockup-shadow-offset, 15px)) * -1);
+	margin-inline-start: calc(var(--standard-lockup-shadow-offset, 15px) * -1);
+	padding-inline-end: var(--standard-lockup-shadow-offset, 15px);
+	padding-bottom: var(--override-shelf-overflow-bleed-bottom, var(--standard-lockup-shadow-offset, 15px));
+	padding-top: var(--override-shelf-overflow-bleed-top, var(--standard-lockup-shadow-offset, 15px));
+	padding-inline-start: var(--standard-lockup-shadow-offset, 15px);
+	scroll-snap-align: start;
+}
+
+.shelf-grid--full-width .shelf-grid__list-item {
+	scroll-margin-inline-start: calc(var(--standard-lockup-shadow-offset, 15px) * -1);
+}
+
+
+.shelf-grid__list {
+	align-items: stretch;
+	column-gap: var(--grid-column-gap-xsmall);
+	grid-auto-columns: var(--grid-max-content-xsmall, calc((100% - (var(--grid-xsmall) - 1) * var(--grid-column-gap-xsmall)) / var(--grid-xsmall)));
+	grid-template-rows: repeat(var(--grid-rows), max-content);
+	row-gap: var(--grid-row-gap-xsmall);
+}
+
+@media (min-width: 1000px) and (max-width: 1259px) {
+	.shelf-grid__list {
+		column-gap: var(--grid-column-gap-small);
+		grid-auto-columns: var(--grid-max-content-small, calc((100% - (var(--grid-small) - 1) * var(--grid-column-gap-small)) / var(--grid-small)));
+		grid-template-rows: repeat(var(--grid-rows), max-content);
+		row-gap: var(--grid-row-gap-small);
+	}
+}
+
+@media (min-width: 1260px) and (max-width: 1579px) {
+	.shelf-grid__list {
+		column-gap: var(--grid-column-gap-medium);
+		grid-auto-columns: var(--grid-max-content-medium, calc((100% - (var(--grid-medium) - 1) * var(--grid-column-gap-medium)) / var(--grid-medium)));
+		grid-template-rows: repeat(var(--grid-rows), max-content);
+		row-gap: var(--grid-row-gap-medium);
+	}
+
+	.app-container.is-drawer-open .shelf-grid__list:not(.shelf-grid__list--grid-type-A, .shelf-grid__list--grid-type-H, .shelf-grid__list--grid-type-1-2-2-2) {
+		grid-auto-columns: var(--grid-max-content-medium, calc((100% - (var(--grid-medium) - 2) * var(--grid-column-gap-medium)) / (var(--grid-medium) - 1)));
+	}
+}
+
+@media (min-width: 1580px) and (max-width: 1939px) {
+	.shelf-grid__list {
+		column-gap: var(--grid-column-gap-large);
+		grid-auto-columns: var(--grid-max-content-large, calc((100% - (var(--grid-large) - 1) * var(--grid-column-gap-large)) / var(--grid-large)));
+		grid-template-rows: repeat(var(--grid-rows), max-content);
+		row-gap: var(--grid-row-gap-large);
+	}
+}
+
+@media (min-width: 1940px) {
+	.shelf-grid__list {
+		column-gap: var(--grid-column-gap-xlarge);
+		grid-auto-columns: var(--grid-max-content-xlarge, calc((100% - (var(--grid-xlarge) - 1) * var(--grid-column-gap-xlarge)) / var(--grid-xlarge)));
+		grid-template-rows: repeat(var(--grid-rows), max-content);
+		row-gap: var(--grid-row-gap-xlarge);
+	}
+}
+
+.shelf-grid__list .shelf-grid__list-item .artwork-component:not(.artwork-component--no-anchor) {
+	anchor-name: --shelf-first-artwork;
+}
+
+.grid.grid--flow-row {
+	display: grid;
+	gap: 10px;
+	list-style: none;
+	margin: 0 var(--bodyGutter) 32px;
+	padding: 0;
+	--roomGridColumns: 2;
+	--roomGridGap: 10px;
+	grid-template-columns: repeat(var(--roomGridColumns), 1fr);
+}
+
+.grid.grid--flow-row .grid-item {
+	list-style: none;
+	position: relative;
+	min-width: 0;
+	padding: 0 0 15px;
+}
+
+@media (min-width: 415px) { .grid.grid--flow-row { --roomGridColumns: 3; } }
+@media (min-width: 484px) and (max-width: 578px) { .grid.grid--flow-row { --roomGridColumns: 2; } }
+@media (min-width: 1000px) { .grid.grid--flow-row { --roomGridColumns: 4; --roomGridGap: 20px; gap: 20px; } }
+@media (min-width: 1260px) { .grid.grid--flow-row { --roomGridColumns: 5; } }
+@media (min-width: 1580px) { .grid.grid--flow-row { --roomGridColumns: 6; } }
+
+.load-more-indicator {
+	display: flex;
+	justify-content: center;
+	padding: 20px 0;
+}
+
+.page-loading {
+	text-align: center;
+	padding: 60px 0;
+	color: var(--systemSecondary);
+	font: var(--title-3);
+}
+
+.shelf-grid__list--grid-type-TrackLockupsShelfNarrow .shelf-grid__list-item {
+	--override-shelf-overflow-bleed-top: 0px;
+	--override-shelf-overflow-bleed-bottom: 0px;
+}
+
+.shelf-grid__list--grid-type-TrackLockupsShelfNarrow .track-lockup:after {
+	border-top: var(--keyline-border-style);
+}
+
+.shelf-grid__list--grid-type-TrackLockupsShelf .shelf-grid__list-item {
+	--override-shelf-overflow-bleed-top: 0px;
+	--override-shelf-overflow-bleed-bottom: 0px;
+}
+
+.shelf-grid__list--grid-type-TrackLockupsShelf .track-lockup:after {
+	border-top: var(--keyline-border-style);
+}

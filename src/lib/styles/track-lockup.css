@@ -1,0 +1,242 @@
+.track-lockup {
+	align-items: center;
+	color: var(--systemPrimary);
+	display: grid;
+	grid-template-columns: auto auto 1fr auto;
+	padding-bottom: 7.5px;
+	padding-top: 7.5px;
+	position: relative;
+	width: 100%;
+	-webkit-padding-end: var(--trackLockupPaddingInlineEnd, 14px);
+	-moz-padding-end: var(--trackLockupPaddingInlineEnd, 14px);
+	padding-inline-end: var(--trackLockupPaddingInlineEnd, 14px);
+}
+
+.track-lockup__action {
+	border-radius: inherit;
+	bottom: 0;
+	inset-inline-end: 0;
+	inset-inline-start: 0;
+	position: absolute;
+	top: 0;
+	z-index: 1;
+}
+
+.track-lockup__action:hover {
+	text-decoration: none;
+}
+
+@supports (background-image: -webkit-named-image(apple-pay-logo-black)) or (-webkit-appearance: -apple-pay-button) {
+	.track-lockup {
+		display: flex;
+	}
+}
+
+.track-lockup:after {
+	border-top: var(--keyline-border-style);
+	content: "";
+	inset-inline-end: 0;
+	inset-inline-start: 0;
+	position: absolute;
+	top: 0;
+	z-index: var(--z-default);
+}
+
+
+.track-lockup .play-button {
+	opacity: 0;
+}
+
+.track-lockup.is-playing .play-button,
+.track-lockup.is-paused .play-button,
+.track-lockup:hover .play-button,
+.track-lockup:focus-within .play-button {
+	opacity: 1;
+}
+
+.track-lockup.is-playing .interactive-play-button,
+.track-lockup.is-paused .interactive-play-button,
+.track-lockup:hover .interactive-play-button,
+.track-lockup:focus-within .interactive-play-button {
+	color: #fff;
+}
+
+.track-lockup.is-playing .track-lockup__play-button-wrapper,
+.track-lockup.is-paused .track-lockup__play-button-wrapper,
+.track-lockup:hover .track-lockup__play-button-wrapper,
+.track-lockup:focus-within .track-lockup__play-button-wrapper {
+	align-items: center;
+	background: rgba(0, 0, 0, .45);
+	display: flex;
+	height: 100%;
+	inset-inline-start: 0;
+	justify-content: center;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: var(--transgray-scrim-z, var(--z-default));
+}
+
+.is-link {
+	cursor: pointer;
+}
+
+.track-lockup__artwork-wrapper {
+	border-radius: 5px;
+	position: relative;
+	-webkit-margin-end: 12px;
+	-moz-margin-end: 12px;
+	margin-inline-end: 12px;
+}
+
+.track-lockup__artwork-wrapper .artwork-component {
+	--artwork-override-width: calc(40px * var(--aspect-ratio, 1));
+	--artwork-override-height: 40px;
+}
+
+.track-lockup:has(.lockup-ranking) .track-lockup__artwork-wrapper {
+	-webkit-margin-end: 8px;
+	-moz-margin-end: 8px;
+	margin-inline-end: 8px;
+}
+
+.track-lockup__play-button-wrapper,
+.track-lockup__play-button-wrapper .play-button {
+	--playButtonIconHoverColor: #fff;
+	--progress-play-background-color: hsla(0, 0%, 100%, .1);
+	transition: var(--global-transition);
+	border-radius: 5px;
+	inset-inline-end: 0;
+	inset-inline-start: 0;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.track-lockup__content {
+	--linkHoverTextDecoration: none;
+	align-items: flex-start;
+	align-self: stretch;
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	overflow: hidden;
+	text-align: start;
+	-webkit-padding-start: 4px;
+	-moz-padding-start: 4px;
+	padding-inline-start: 4px;
+	-webkit-padding-end: 4px;
+	-moz-padding-end: 4px;
+	padding-inline-end: 4px;
+	-webkit-margin-end: 8px;
+	-moz-margin-end: 8px;
+	margin-inline-end: 8px;
+	min-width: 0;
+}
+
+@supports (background-image: -webkit-named-image(apple-pay-logo-black)) or (-webkit-appearance: -apple-pay-button) {
+	.track-lockup__content {
+		flex-grow: 1;
+	}
+}
+
+.track-lockup__title {
+	--explicitBadgeSize: 10px;
+	align-items: baseline;
+	display: inline-grid;
+	font: var(--body-tall);
+	grid-template-columns: 1fr auto auto;
+}
+
+.track-lockup__subtitle {
+	--linkHoverColor: inherit;
+	--linkHoverTextDecoration: underline;
+	color: var(--systemSecondary);
+	font: var(--body);
+	max-width: 100%;
+}
+
+.track-lockup__clamp-wrapper {
+	margin-bottom: -4px;
+	margin-top: -4px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	-webkit-margin-start: -4px;
+	-moz-margin-start: -4px;
+	margin-inline-start: -4px;
+	-webkit-margin-end: -4px;
+	-moz-margin-end: -4px;
+	margin-inline-end: -4px;
+	padding-bottom: 4px;
+	padding-top: 4px;
+	-webkit-padding-end: 4px;
+	-moz-padding-end: 4px;
+	padding-inline-end: 4px;
+	-webkit-padding-start: 4px;
+	-moz-padding-start: 4px;
+	padding-inline-start: 4px;
+}
+
+.track-lockup__context-menu {
+	-webkit-margin-start: auto;
+	-moz-margin-start: auto;
+	margin-inline-start: auto;
+}
+
+.track-lockup__context-menu .cloud-buttons {
+	align-items: stretch;
+	display: flex;
+	flex-shrink: 0;
+	height: 28px;
+	justify-content: flex-end;
+}
+
+.track-lockup__context-menu .cloud-buttons .more-button {
+	--contextMenuButtonSize: 28px;
+	--contextMenuCircleFillOverride: var(--systemQuinary);
+	--contextMenuEllipsisFillOverride: var(--systemSecondary);
+	--contextMenuCircleHoverFill: var(--systemQuinary);
+	--contextMenuEllipsisHoverFill: var(--systemSecondary);
+}
+
+.track-lockup__context-menu .contextual-menu__trigger {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+}
+
+.lockup-ranking {
+	color: var(--systemPrimary);
+	display: block;
+	font: var(--body-emphasized);
+	max-width: 24px;
+	min-width: 24px;
+	transform: translateY(-8.5px);
+}
+
+.track-lockup .click-action {
+	color: var(--systemPrimary);
+	text-decoration: none;
+}
+
+.track-lockup .click-action:hover {
+	text-decoration: none;
+}
+
+.track-lockup__subtitle .click-action {
+	color: var(--systemSecondary);
+	text-decoration: none;
+}
+
+.track-lockup__subtitle .click-action:hover {
+	text-decoration: none;
+}
+
+

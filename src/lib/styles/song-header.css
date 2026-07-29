@@ -1,0 +1,62 @@
+.song-header-page-details {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	flex-shrink: 0;
+	grid-area: headings;
+}
+
+@media (max-width: 999px) {
+	.song-header-page-details {
+		margin-top: 11px;
+		text-align: center;
+	}
+}
+
+@media (min-width: 1000px) {
+	.song-header-page-details {
+		align-items: flex-start;
+		justify-content: center;
+	}
+}
+
+.song-header-page__song-header-title {
+	font: var(--large-title-emphasized);
+	margin-bottom: 2px;
+	text-wrap: pretty;
+}
+
+.song-header-page__song-header-subtitle {
+	color: var(--systemSecondary);
+	font: var(--subhead-emphasized);
+	margin-top: 2px;
+}
+
+.song-subtitles-item:before {
+	color: var(--systemSecondary);
+	content: " · ";
+}
+
+
+.song-credits-section {
+	margin-top: 18px;
+	max-width: 440px;
+}
+
+.song-credits-section__row {
+	display: flex;
+	gap: 8px;
+	padding: 2px 0;
+}
+
+.song-credits-section__role {
+	color: var(--systemSecondary);
+	font: var(--body-tall);
+	flex-shrink: 0;
+	min-width: 80px;
+}
+
+.song-credits-section__artists {
+	color: var(--systemPrimary);
+	font: var(--body-tall);
+}

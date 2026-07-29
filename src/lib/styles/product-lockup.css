@@ -1,0 +1,237 @@
+.product-lockup { height: 100%; min-width: 0; }
+.product-lockup.interactive { cursor: pointer; }
+
+.product-lockup__artwork {
+	border-radius: var(--global-border-radius-medium, 7px);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, .01), 0 2px 2px rgba(0, 0, 0, .01), 0 4px 4px rgba(0, 0, 0, .02), 0 8px 8px rgba(0, 0, 0, .03), 0 14px 14px rgba(0, 0, 0, .03);
+	position: relative;
+	z-index: var(--z-default);
+}
+.product-lockup__artwork:after {
+	background-color: rgba(51, 51, 51, .3);
+	border-radius: inherit;
+	content: "";
+	height: 100%;
+	left: 0;
+	opacity: var(--scrimOpacity, 0);
+	position: absolute;
+	top: 0;
+	transition: opacity .1s ease-in;
+	width: 100%;
+	z-index: 1;
+}
+@media (hover: hover) and (pointer: fine) {
+	.product-lockup.interactive { --scrimOpacity: 0; }
+	.product-lockup.interactive:hover,
+	.product-lockup.interactive:focus-within,
+	.product-lockup.interactive.has-open-menu { --scrimOpacity: 1; }
+	@supports selector(:has(:focus-visible)) {
+		.product-lockup.interactive:focus-within { --scrimOpacity: 0; }
+		.product-lockup.interactive:hover,
+		.product-lockup.interactive:has(:focus-visible),
+		.product-lockup.interactive.has-open-menu { --scrimOpacity: 1; }
+	}
+}
+
+.product-lockup__controls {
+	--playButtonSize: 30px;
+	--contextMenuButtonSize: 30px;
+	border-radius: inherit;
+	height: 100%;
+	opacity: var(--scrimOpacity, 0);
+	position: absolute;
+	top: 0;
+	transition: var(--global-transition);
+	width: 100%;
+	z-index: calc(var(--z-default) + 1);
+}
+.product-lockup__link {
+	background: transparent;
+	border: 0;
+	color: transparent;
+	display: block;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	text-align: start;
+	width: 100%;
+	z-index: var(--z-default);
+}
+.product-lockup__link-button,
+.product-lockup__artwork-action,
+.product-lockup__title-button {
+	appearance: none;
+	background: transparent;
+	border: 0;
+	cursor: pointer;
+	font: inherit;
+	margin: 0;
+	padding: 0;
+}
+.product-lockup__play-button {
+	bottom: 10px;
+	inset-inline-start: 10px;
+	line-height: 0;
+	position: absolute;
+	z-index: var(--z-default);
+}
+.product-lockup__play-button--large {
+	bottom: 0;
+	inset-inline-end: 0;
+	inset-inline-start: 0;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	z-index: 1;
+}
+.product-lockup__play-button--large .play-button.is-large {
+	border-radius: 0;
+	height: 100%;
+	width: 100%;
+}
+.product-lockup__play-button--large .play-button.is-large .icon {
+	height: var(--playButtonSize, 60px);
+	width: var(--playButtonSize, 60px);
+}
+.product-lockup__context-button {
+	bottom: 10px;
+	inset-inline-end: 10px;
+	line-height: 0;
+	position: absolute;
+	z-index: var(--z-default);
+}
+
+.product-lockup__content { margin-top: 4px; }
+.product-lockup__content-details { text-align: start; }
+.product-lockup__content-details--no-subtitle-link:hover { --linkHoverTextDecoration: underline; }
+.product-lockup__content-details--no-subtitle-link .product-lockup__subtitle-links,
+.product-lockup__content-details--no-subtitle-link .product-lockup__title-link {
+	text-decoration: var(--linkHoverTextDecoration);
+}
+.product-lockup__title-link {
+	color: var(--systemPrimary);
+	display: grid;
+	font: var(--callout);
+	grid-template-columns: minmax(0, 1fr) auto;
+}
+.product-lockup__title-link--multiline { align-items: start; }
+.product-lockup__title {
+	color: var(--systemPrimary);
+	font: var(--callout);
+	text-decoration: none;
+}
+.product-lockup__title-button { text-align: start; }
+.product-lockup__top-end {
+	display: flex;
+	gap: 5px;
+	margin-inline-start: 10px;
+}
+.product-lockup__subtitle-links {
+	color: var(--systemSecondary);
+	font: var(--callout);
+	margin-top: 1px;
+}
+.product-lockup__subtitle {
+	color: var(--systemSecondary);
+	font: var(--callout);
+}
+
+.product-lockup__artwork .click-action { position: relative; z-index: calc(var(--z-default) + 1); display: block; width: 100%; }
+
+.square-lockup-wrapper { height: 100%; }
+
+.category-brick__placeholder { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1; background: var(--systemQuaternary); }
+.category-brick__placeholder-text { color: var(--systemSecondary); font: var(--title-3-emphasized); }
+
+.product-lockup--overlay-title .product-lockup__controls {
+	opacity: 1;
+}
+
+.product-lockup__overlay {
+	align-items: flex-end;
+	border-radius: var(--global-border-radius-medium, 7px);
+	bottom: 0;
+	display: flex;
+	justify-content: space-between;
+	left: 0;
+	padding: 12px 10px 10px;
+	position: absolute;
+	right: 0;
+	z-index: calc(var(--z-default) + 1);
+}
+
+.product-lockup__overlay:before {
+	background: linear-gradient(transparent, rgba(0, 0, 0, 0.5));
+	border-radius: inherit;
+	bottom: 0;
+	content: "";
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: -20px;
+	z-index: -1;
+}
+
+.product-lockup__overlay-content {
+	flex: 1;
+	min-width: 0;
+}
+
+.product-lockup__overlay-eyebrow {
+	color: rgba(255, 255, 255, 0.7);
+	display: -webkit-box;
+	font: var(--subhead-emphasized);
+	margin-bottom: 2px;
+	-webkit-line-clamp: 1;
+	line-clamp: 1;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	pointer-events: none;
+}
+
+.product-lockup__overlay-text {
+	color: #fff;
+	display: -webkit-box;
+	font: var(--title-3-emphasized);
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	padding-inline-end: 8px;
+	pointer-events: none;
+	z-index: calc(var(--z-default) + 1);
+}
+
+.product-lockup__overlay-subtitle {
+	color: rgba(255, 255, 255, 0.7);
+	display: -webkit-box;
+	font: var(--callout);
+	margin-top: 2px;
+	-webkit-line-clamp: 1;
+	line-clamp: 1;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	pointer-events: none;
+}
+
+.product-lockup__overlay-play {
+	flex-shrink: 0;
+	opacity: 0;
+	transition: opacity 0.15s ease-in;
+	z-index: calc(var(--z-default) + 1);
+}
+
+.product-lockup--overlay-title:hover .product-lockup__overlay-play,
+.product-lockup--overlay-title:focus-within .product-lockup__overlay-play {
+	opacity: 1;
+}
+
+.product-lockup__overlay-play .play-button {
+	--iconCircleFillBGOverride: transparent;
+}
+
+.product-lockup__overlay-play .play-button .icon {
+	height: 32px;
+	width: 32px;
+}

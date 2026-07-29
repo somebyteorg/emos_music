@@ -1,0 +1,94 @@
+.play-button {
+	line-height: 0;
+	pointer-events: auto;
+	position: relative;
+	z-index: var(--z-default);
+}
+.play-button--platter {
+	border-radius: 50%;
+	border: none;
+	background: none;
+	cursor: pointer;
+	padding: 0;
+}
+.play-button--platter .icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: var(--playButtonSize, 30px);
+	width: var(--playButtonSize, 30px);
+	background-color: var(--systemStandardThinMaterialSover-default_IC);
+	border-radius: 50%;
+}
+.play-button--platter .icon svg {
+	height: 100%;
+	width: 100%;
+}
+@supports (backdrop-filter: blur(10px)) {
+	.play-button--platter .icon {
+		backdrop-filter: saturate(190%) blur(60px);
+		background-color: var(--systemStandardThinMaterialSover);
+	}
+	@media (prefers-color-scheme: dark) {
+		.play-button--platter .icon {
+			backdrop-filter: saturate(180%) blur(60px);
+		}
+	}
+}
+
+.more-button {
+	--iconCircleFill: transparent;
+	--iconEllipsisFill: #fff;
+	display: block;
+	height: var(--contextMenuButtonSize, 28px);
+	line-height: 0;
+	width: var(--contextMenuButtonSize, 28px);
+}
+
+.more-button svg {
+	border-radius: inherit;
+	height: 100%;
+	width: 100%;
+}
+
+.more-button--platter {
+	--iconCircleFill: var(--contextMenuCircleFillOverride, transparent);
+	--iconEllipsisFill: var(--contextMenuEllipsisFillOverride, #fff);
+	border: none;
+	padding: 0;
+	background: none;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.more-button--non-platter {
+	--iconEllipsisFill: var(--contextMenuEllipsisFillOverride, var(--keyColor));
+}
+
+.more-button--material {
+	background-color: var(--systemStandardThinMaterialSover-default_IC);
+	height: var(--contextMenuButtonSize, 30px);
+	width: var(--contextMenuButtonSize, 30px);
+	border: none;
+	border-radius: 50%;
+	cursor: pointer;
+	padding: 0;
+}
+
+.more-button--material svg {
+	height: 100%;
+	width: 100%;
+}
+
+@supports (backdrop-filter: blur(10px)) {
+	.more-button--material {
+		backdrop-filter: saturate(190%) blur(60px);
+		background-color: var(--systemStandardThinMaterialSover);
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.more-button--material {
+			backdrop-filter: saturate(180%) blur(60px);
+		}
+	}
+}

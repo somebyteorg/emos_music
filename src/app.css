@@ -1,0 +1,528 @@
+/* ==========================================================================
+   Design Tokens - Colors
+   ========================================================================== */
+:root {
+    --keyline-border-style: .5px solid var(--labelDivider);
+
+    --systemPrimary: rgba(0, 0, 0, .85);
+    --systemPrimary-vibrant: #4d4d4d;
+    --systemPrimary-onLight: rgba(0, 0, 0, .85);
+    --systemPrimary-onDark: hsla(0, 0%, 100%, .85);
+    --systemPrimary-vibrantOnLight: #4d4d4d;
+    --systemPrimary-vibrantOnDark: #e5e5e5;
+    --systemSecondary: rgba(0, 0, 0, .5);
+    --systemSecondary-vibrant: gray;
+    --systemSecondary-onLight: rgba(0, 0, 0, .5);
+    --systemSecondary-onDark: hsla(0, 0%, 100%, .55);
+    --systemSecondary-vibrantOnLight: gray;
+    --systemSecondary-vibrantOnDark: #7c7c7c;
+    --systemTertiary: rgba(0, 0, 0, .25);
+    --systemTertiary-vibrant: #c6c6c6;
+    --systemTertiary-onLight: rgba(0, 0, 0, .25);
+    --systemTertiary-onDark: hsla(0, 0%, 100%, .25);
+    --systemTertiary-vibrantOnLight: #c6c6c6;
+    --systemTertiary-vibrantOnDark: #414141;
+    --systemQuaternary: rgba(0, 0, 0, .1);
+    --systemQuaternary-onLight: rgba(0, 0, 0, .1);
+    --systemQuaternary-onDark: hsla(0, 0%, 100%, .1);
+    --systemQuinary: rgba(0, 0, 0, .05);
+    --systemQuinary-onLight: rgba(0, 0, 0, .05);
+    --systemQuinary-onDark: hsla(0, 0%, 100%, .05);
+
+
+    --keyColor: var(--systemPrimary);
+    --keyColor-rgb: 0, 0, 0;
+
+    --labelDivider: rgba(0, 0, 0, .15);
+
+    --dropdownLightGrayIcon: #999;
+
+    /* Surfaces */
+    --pageBG: #fff;
+    --pageBG-rgb: 255, 255, 255;
+    --pageBG-light: #fff;
+    --pageBG-dark: #1f1f1f;
+    --shelfBG: rgba(0, 0, 0, .05);
+    --opaqueShelfBG: #f2f2f2;
+    --fallbackMaterialBG: hsla(0, 0%, 100%, .97);
+
+    --genericJoeColor: #ebebeb;
+    --playerMissingArtworkIcon: rgba(60, 60, 67, 0.18);
+    --playerMissingArtworkBg: #e9e9e9;
+    --selectionColor: var(--systemPrimary);
+
+    /* Navigation */
+    --navSidebarBG: rgba(60, 60, 67, .03);
+    --navSidebarSelectedState: rgba(60, 60, 67, .1);
+    --mobileNavigationBG: #fff;
+    --searchBoxIconFill: rgba(0, 0, 0, .65);
+    --searchBarBorderColor: rgba(0, 0, 0, .15);
+
+    /* Glass Material */
+    --glassMaterialBackground: rgba(245, 245, 247, .55);
+    --glassMaterialInnerStroke: #000;
+    --glassMaterialInnerStrokeAlpha: .1;
+    --glassMaterialInnerStrokeCombined: rgba(0, 0, 0, .05);
+    --glassMaterialShadowColor: rgba(0, 0, 0, .1);
+    --glassMaterialBackground-onLight: rgba(245, 245, 247, .55);
+    --glassMaterialBackground-onDark: rgba(38, 38, 40, .6);
+    --glassMaterialInnerStroke-onLight: #000;
+    --glassMaterialInnerStroke-onDark: #fff;
+    --glassMaterialInnerStrokeAlpha-onLight: .05;
+    --glassMaterialInnerStrokeAlpha-onDark: .2;
+    --glassMaterialInnerStrokeCombined-onLight: rgba(0, 0, 0, .05);
+    --glassMaterialInnerStrokeCombined-onDark: hsla(0, 0%, 100%, .2);
+    --glassMaterialShadowColor-onLight: rgba(0, 0, 0, .1);
+    --glassMaterialShadowColor-onDark: rgba(0, 0, 0, .2);
+
+    /* Materials */
+    --systemStandardThinMaterialSover: hsla(0, 0%, 96.5%, .48);
+    --systemStandardThinMaterialSover-default_IC: #dcdcdc;
+    --systemStandardMediumMaterialSover: hsla(0, 0%, 100%, .72);
+    --systemStandardMediumMaterialSover-default_IC: #d8d8d8;
+    --systemHeaderMaterialSover: hsla(0, 0%, 100%, .8);
+    --systemHeaderMaterialSover-default_IC: #fff;
+    --systemToolbarTitlebarMaterialSover: hsla(0, 0%, 100%, .72);
+    --systemToolbarTitlebarMaterialSover-default_IC: #d8d8d8;
+    --systemToolbarTitlebarMaterialSover-inactive: hsla(0, 0%, 100%, .68);
+    --systemToolbarTitlebarMaterialSover-inactive_IC: #d4d4d4;
+
+    /* Contextual Menu */
+    --z-contextual-menus: 9951;
+    --systemStandardThickMaterialSover: rgba(246, 246, 246, .82);
+    --systemStandardThickMaterialSover-default_IC: #f6f6f6;
+    --dialogShadowColor: rgba(0, 0, 0, .3);
+
+    /* CommerceKit Swatch (light defaults) */
+    --sk-fill-tertiary: #f5f5f7;
+    --sk-fill-gray-quaternary: #e8e8ed;
+    --sk-fill-gray-quaternary-alpha: rgba(0, 0, 0, .08);
+    --sk-fill-gray-tertiary: #d2d2d7;
+    --sk-glyph-gray: #1d1d1f;
+    --sk-glyph-gray-secondary: #6e6e73;
+    --sk-glyph-gray-secondary-alt: #424245;
+    --sk-glyph-gray-tertiary: #86868b;
+    --sk-body-link-color: #06c;
+
+    /* Player */
+    --playerDropShadow2: rgba(0, 0, 0, .1);
+
+    /* Full-screen Player / Modal */
+    --modalScrimColor: rgba(0, 0, 0, .45);
+    --nowPlayingBackdropBG: #878787;
+
+    /* Segmented Control */
+    --segmentedControlBG: rgba(118, 118, 128, .12);
+    --segmentedControlSelectedText: rgba(0, 0, 0, .85);
+    --segmentedControlSelectedBG: #fff;
+    --segmentedControlSelectedShadow1: rgba(0, 0, 0, .12);
+    --segmentedControlSelectedShadow2: rgba(0, 0, 0, .04);
+    --segmentedControlSelectedBorder: rgba(0, 0, 0, .15);
+    --segmentedControlActiveBG: hsla(0, 0%, 100%, .7);
+
+    /* Track List */
+    --tracklistHoverColor: rgba(0, 0, 0, .06);
+
+    /* Add to Library Button */
+    --add-to-library-bg-color: rgba(0, 0, 0, .06);
+    --add-to-library-border-color: rgba(0, 0, 0, .04);
+
+    /* Hover & Cards */
+
+    /* Z-Index Scale */
+    --z-default: 1;
+    --z-gpu: 1001;
+    --z-web-chrome: 9901;
+
+    --z-modal: 10001;
+
+    /* Transitions */
+    --global-transition-property: opacity;
+    --global-transition-duration: .1s;
+    --global-transition-timing-function: ease-in;
+    --global-transition: var(--global-transition-property, opacity) var(--global-transition-duration, .1s) var(--global-transition-timing-function, ease-in);
+
+    color-scheme: light dark;
+}
+
+/* ==========================================================================
+   Design Tokens - Dark Mode
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --systemPrimary: hsla(0, 0%, 100%, .85);
+        --systemPrimary-vibrant: #e5e5e5;
+        --systemSecondary: hsla(0, 0%, 100%, .55);
+        --systemTertiary: hsla(0, 0%, 100%, .25);
+        --systemQuaternary: hsla(0, 0%, 100%, .1);
+        --systemQuinary: hsla(0, 0%, 100%, .05);
+
+        --labelDivider: hsla(0, 0%, 100%, .1);
+        --dropdownLightGrayIcon: #999;
+        --keyColor-rgb: 255, 255, 255;
+
+        --pageBG: #1f1f1f;
+        --pageBG-rgb: 31, 31, 31;
+        --shelfBG: rgba(255, 255, 255, .05);
+        --opaqueShelfBG: #2b2b2b;
+        --fallbackMaterialBG: hsla(0, 0%, 12%, .97);
+
+        --genericJoeColor: #323232;
+        --playerMissingArtworkIcon: rgba(235, 235, 245, 0.16);
+        --playerMissingArtworkBg: #3a3a3a;
+        --selectionColor: var(--systemPrimary);
+
+        --navSidebarBG: rgba(255, 255, 255, .03);
+        --navSidebarSelectedState: hsla(0, 0%, 100%, .08);
+        --mobileNavigationBG: #1c1c1e;
+        --searchBoxIconFill: hsla(0, 0%, 100%, .55);
+        --searchBarBorderColor: hsla(0, 0%, 100%, .15);
+
+        --glassMaterialBackground: rgba(38, 38, 40, .6);
+        --glassMaterialInnerStroke: #fff;
+        --glassMaterialInnerStrokeAlpha: .25;
+        --glassMaterialInnerStrokeCombined: hsla(0, 0%, 100%, .2);
+        --glassMaterialShadowColor: rgba(0, 0, 0, .2);
+
+        --systemStandardThinMaterialSover: rgba(40, 40, 40, .5);
+        --systemStandardThinMaterialSover-default_IC: #0a0a0a;
+        --systemStandardMediumMaterialSover: rgba(40, 40, 40, .72);
+        --systemStandardMediumMaterialSover-default_IC: #0a0a0a;
+        --systemHeaderMaterialSover: hsla(0, 0%, 12%, .8);
+        --systemHeaderMaterialSover-default_IC: #1c1c1e;
+        --systemToolbarTitlebarMaterialSover: rgba(40, 40, 40, .72);
+        --systemToolbarTitlebarMaterialSover-default_IC: #0a0a0a;
+        --systemToolbarTitlebarMaterialSover-inactive: rgba(40, 40, 40, .68);
+        --systemToolbarTitlebarMaterialSover-inactive_IC: #0a0a0a;
+
+        /* Contextual Menu */
+        --systemStandardThickMaterialSover: rgba(40, 40, 40, .82);
+        --systemStandardThickMaterialSover-default_IC: #1c1c1e;
+        --dialogShadowColor: rgba(0, 0, 0, .6);
+
+        /* CommerceKit Swatch (dark) */
+        --sk-fill-tertiary: #1d1d1f;
+        --sk-fill-gray-quaternary: #333336;
+        --sk-fill-gray-quaternary-alpha: hsla(0, 0%, 100%, .2);
+        --sk-fill-gray-tertiary: #424245;
+        --sk-glyph-gray: #f5f5f7;
+        --sk-glyph-gray-secondary: #86868b;
+        --sk-glyph-gray-secondary-alt: #d2d2d7;
+        --sk-glyph-gray-tertiary: #6e6e73;
+        --sk-body-link-color: #2997ff;
+
+
+        --playerDropShadow2: rgba(0, 0, 0, .3);
+
+        --modalScrimColor: rgba(0, 0, 0, .45);
+        --nowPlayingBackdropBG: #878787;
+
+        --segmentedControlBG: rgba(118, 118, 128, .24);
+        --segmentedControlSelectedText: hsla(0, 0%, 100%, .85);
+        --segmentedControlSelectedBG: #2c2c2e;
+        --segmentedControlSelectedShadow1: rgba(0, 0, 0, .36);
+        --segmentedControlSelectedShadow2: rgba(0, 0, 0, .12);
+        --segmentedControlSelectedBorder: hsla(0, 0%, 100%, .15);
+        --segmentedControlActiveBG: #747477;
+
+        --tracklistAltRowColor: hsla(0, 0%, 100%, .03);
+        --tracklistHoverColor: hsla(0, 0%, 100%, .06);
+
+        --add-to-library-bg-color: hsla(0, 0%, 100%, .04);
+        --add-to-library-border-color: hsla(0, 0%, 100%, .08);
+
+        --lockupHoverBGColor: rgba(51, 51, 51, .3);
+        --cardHoverColor: rgba(120, 120, 128, .25);
+        --button-pill-color: #000;
+        --button-pill-background-color: #fff;
+    }
+}
+
+/* ==========================================================================
+   Design Tokens - Layout & Typography
+   ========================================================================== */
+:root {
+    --web-navigation-width: 164px;
+    --bodyGutter: 25px;
+    --global-border-radius-large: 10px;
+    --font-family: -apple-system, BlinkMacSystemFont, Apple Color Emoji, SF Pro, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
+
+    --large-title: 400 26px/1.1538461538 var(--font-family);
+    --large-title-emphasized: 700 26px/1.1538461538 var(--font-family);
+    --large-title-semibold: 600 26px/1.1538461538 var(--font-family);
+    --large-title-short: 400 26px/1.1538461538 var(--font-family);
+    --large-title-emphasized-short: 700 26px/1.1538461538 var(--font-family);
+    --header-emphasized: 700 34px/1.1764905882 var(--font-family);
+    --title-1-emphasized: 700 22px/1.1818181818 var(--font-family);
+    --title-1: 400 22px/1.1818181818 var(--font-family);
+    --title-2-semibold: 600 17px/1.2941176471 var(--font-family);
+    --title-2: 400 17px/1.2941176471 var(--font-family);
+    --title-2-emphasized: 700 17px/1.2941176471 var(--font-family);
+    --title-3: 400 15px/1.3333833333 var(--font-family);
+    --title-3-medium: 500 15px/1.3333833333 var(--font-family);
+    --title-3-emphasized: 600 15px/1.3333833333 var(--font-family);
+    --title-3-semibold: 600 15px/1.3333833333 var(--font-family);
+    --title-3-tall: 400 15px/1.4666666667 var(--font-family);
+    --title-navigation: 400 16px/1.375 var(--font-family);
+    --body: 400 13px/1.2307692308 var(--font-family);
+    --body-emphasized: 600 13px/1.2307692308 var(--font-family);
+    --body-line-height: 1.2307692308;
+    --body-tall: 400 13px/1.3846153846 var(--font-family);
+    --subhead-emphasized: 600 11px/1.2727272727 var(--font-family);
+    --subhead: 400 11px/1.2727272727 var(--font-family);
+    --callout: 400 12px/1.25 var(--font-family);
+    --callout-medium: 500 12px/1.25 var(--font-family);
+    --callout-emphasized: 600 12px/1.25 var(--font-family);
+    --footnote-emphasized: 600 10px/1.3 var(--font-family);
+}
+
+@media (min-width: 484px) {
+    :root {
+        --web-navigation-width: 33.8842975207vw;
+        --title-navigation: 400 14px/1.4285914286 var(--font-family);
+    }
+}
+
+@media (min-width: 767.32px) {
+    :root {
+        --web-navigation-width: 260px;
+    }
+}
+
+@media (min-width: 1000px) {
+    :root {
+        --bodyGutter: 40px;
+    }
+}
+
+/* ==========================================================================
+   Reset
+   ========================================================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    min-height: 100%;
+    font-family: var(--font-family);
+    font-size: 106.25%;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    overflow-x: hidden;
+    background-color: var(--pageBG);
+}
+
+body {
+    background-color: var(--pageBG);
+    cursor: default;
+
+    font: var(--body);
+    color: var(--systemPrimary);
+    min-height: 100%;
+    overflow-x: hidden;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-synthesis: none;
+    -moz-font-feature-settings: "kern";
+    font-feature-settings: "kern";
+}
+
+.body-container, html {
+    min-height: 100%;
+}
+
+button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: none;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    line-height: inherit;
+    vertical-align: inherit;
+}
+
+:focus-visible {
+    outline: 4px solid var(--sk-focus-color, rgba(var(--keyColor-rgb), .6));
+    outline-offset: var(--sk-focus-offset, 1px);
+}
+
+[type=button]:focus-visible, a:focus-visible, button:focus-visible {
+    box-shadow: 0 0 0 4px rgba(var(--keyColor-rgb), .6);
+    outline: none;
+}
+
+a {
+    color: var(--linkColor, inherit);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: var(--linkHoverTextDecoration, underline);
+}
+
+ul, ol {
+    list-style: none;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+input {
+    font: inherit;
+    color: inherit;
+}
+
+/* ==========================================================================
+   App Layout
+   ========================================================================== */
+.app-container {
+    display: block;
+    min-height: 100dvh;
+
+}
+
+@media (min-width: 484px) {
+    .app-container {
+        display: grid;
+        grid-template-areas: "structure-header structure-main-section";
+        grid-template-columns: 33.88vw minmax(0, 1fr);
+        grid-template-rows: minmax(0, 1fr);
+        height: 100dvh;
+    }
+}
+
+@media (min-width: 767.32px) {
+    .app-container {
+        grid-template-columns: 260px minmax(0, 1fr);
+    }
+}
+
+.header {
+    gap: 0;
+    position: relative;
+    width: 100%;
+    z-index: var(--z-web-chrome);
+}
+
+@media (max-width: 483px) {
+    .header {
+        height: 0;
+        overflow: visible;
+    }
+}
+
+@media (min-width: 484px) {
+    .header {
+        grid-area: structure-header;
+        height: 100%;
+        width: 33.8842975207vw;
+        z-index: calc(var(--z-web-chrome) - 11);
+    }
+}
+
+@media (min-width: 767.32px) {
+    .header {
+        width: 260px;
+    }
+}
+
+.scrollable-page {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    transition: margin .1s linear, width .1s linear, opacity var(--global-transition-duration) var(--global-transition-timing-function);
+    width: 100%;
+    z-index: var(--z-default);
+}
+
+.scrollable-page.page--loading {
+    opacity: 0;
+}
+
+.has-theme-override .scrollable-page {
+    background: var(--joe-color, var(--pageBG));
+}
+
+@media (max-width: 483px) {
+    .scrollable-page {
+        overflow-x: hidden;
+        padding-top: calc(52px + env(safe-area-inset-top, 0px));
+        padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+    }
+}
+
+@media (min-width: 484px) {
+    body {
+        overflow: hidden;
+    }
+    .scrollable-page {
+        grid-area: structure-main-section;
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin-top: 0;
+        grid-column: 1/-1;
+        padding-inline-start: var(--web-navigation-width);
+        padding-bottom: 64px;
+    }
+}
+
+
+main { flex-grow: 1; }
+
+.content-container {
+    margin: 0 auto;
+    max-width: 1680px;
+    min-height: 100%;
+    position: relative;
+    width: 100%;
+    z-index: var(--z-default);
+}
+
+@media (min-width: 484px) {
+    .app-container .content-container {
+        max-width: unset;
+    }
+
+    .app-container.is-drawer-open .player-bar {
+        padding-inline-end: 320px;
+    }
+
+    .app-container.is-drawer-open .scrollable-page {
+        padding-inline-end: 300px;
+    }
+}
+
+@media (min-width: 1260px) {
+    .app-container.is-drawer-open .section--full-width:not(.with-pinned-item) .section-content,
+    .app-container.is-drawer-open .section--full-width:not(.with-pinned-item) .tracklist-footer {
+        padding-inline-end: 0;
+    }
+
+    .app-container.is-drawer-open .section.with-pinned-item {
+        padding-inline-end: 0;
+    }
+
+    .app-container.is-drawer-open footer {
+        padding-inline-end: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
