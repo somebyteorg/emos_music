@@ -159,7 +159,17 @@ async function request<T>(path: string, params: RequestParams = {}, method: Http
 
 	const promise = fetch(url, init)
 		.then(async (res) => {
-			if (!res.ok) throw new Error(`EMOS API error: ${res.status}`);
+			if (!res.ok) {
+				let detail = '';
+				try {
+					const body = await res.text();
+					const parsed = JSON.parse(body) as { message?: string; error?: string };
+					detail = parsed.message || parsed.error || '';
+				} catch {
+					// 非 JSON 响应体，忽略
+				}
+				throw new Error(detail || `EMOS API error: ${res.status}`);
+			}
 			if (res.status === 204) return null as T;
 			return await res.json() as T;
 		})
