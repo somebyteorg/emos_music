@@ -8,7 +8,7 @@
 		seekTo, getCurrentTime, removeFromQueue, playQueueItem
 	} from '$lib/stores/player';
 	import type { PlayerState, PlaybackProgress } from '$lib/stores/player';
-	import { LyricsScene } from '$lib/utils/lyrics-scene';
+	import type { LyricsScene } from '$lib/utils/lyrics-scene';
 	import { formatDuration } from '$lib/utils/format';
 	import { getLyric, parseLyricLines, parseYrcLines } from '$lib/services/emos';
 	import { favoriteIds, getFavoriteStore } from '$lib/stores/favorite-store';
@@ -446,11 +446,16 @@
 		dragOffset = 0;
 	}
 
-	function initLyricsScene(): void {
+	async function initLyricsScene(): Promise<void> {
 		if (!backdropCanvas) return;
-		const url = playerState.currentTrack?.artworkUrl;
-		lyricsScene = new LyricsScene(backdropCanvas, url);
-		lyricsSceneReady = true;
+		try {
+			const { LyricsScene: LyricsSceneClass } = await import('$lib/utils/lyrics-scene');
+			const url = playerState.currentTrack?.artworkUrl;
+			lyricsScene = new LyricsSceneClass(backdropCanvas, url);
+			lyricsSceneReady = true;
+		} catch (e) {
+			console.warn('LyricsScene 加载失败:', e);
+		}
 	}
 
 	function destroyLyricsScene(): void {
