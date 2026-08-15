@@ -24,3 +24,4 @@ api.postman_collection.json
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+.arts/
