@@ -116,8 +116,7 @@ function applyLoginStatus(result: {
 
 export async function bootstrapEmosAuth(): Promise<void> {
 	try {
-		const result = await bootstrapEmosSession();
-		const status = result.status;
+		const status = await bootstrapEmosSession();
 		// 请求未携带 token 时，后端必然返回 is_sign:false，不代表本地凭据失效，
 		// 不可据此清空已恢复的本地会话（防止刷新/HMR 竞态导致登录态被反复清除）
 		if (!status.profile && !status.hadToken) return;

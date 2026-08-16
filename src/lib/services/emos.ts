@@ -614,12 +614,14 @@ export function getEmosLoginUrl(returnUrl?: string): string {
 	return url.toString();
 }
 
-export async function getLoginStatus(): Promise<{
+export interface EmosLoginStatus {
 	code: number;
 	account: { id: number; userName: string; nickname: string; vipType?: number } | null;
 	profile: { nickname: string; avatarUrl: string; userId: number; vipType?: number } | null;
 	hadToken: boolean;
-}> {
+}
+
+export async function getLoginStatus(): Promise<EmosLoginStatus> {
 	const hadToken = getEmosToken() !== '';
 	// sign/check 与 /user 并行：登录恢复少一个串行 RTT。
 	// 无 token 时 /user 必然失败，不发送；有 token 时即使 sign 失败，
@@ -657,9 +659,8 @@ export async function getLoginStatus(): Promise<{
 	};
 }
 
-export async function bootstrapEmosSession(): Promise<{ init: unknown; status: ReturnType<typeof getLoginStatus> extends Promise<infer T> ? T : never }> {
-	const status = await getLoginStatus();
-	return { init: null, status };
+export async function bootstrapEmosSession(): Promise<EmosLoginStatus> {
+	return getLoginStatus();
 }
 
 // --- Homepage types (legacy compatibility) ---
