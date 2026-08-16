@@ -18,6 +18,16 @@ export interface PlayerTrack {
 
 type RepeatMode = 0 | 1 | 2;
 
+// 播放队列持久化快照
+const QUEUE_SNAPSHOT_KEY = 'emos-player-queue-snapshot';
+const QUEUE_SNAPSHOT_TTL = 2 * 60 * 60 * 1000; // 2 小时
+
+type QueueSnapshot = {
+	queue: PlayerTrack[];
+	queueIndex: number;
+	savedAt: number;
+};
+
 export type PlayerState = {
 	isPlaying: boolean;
 	currentTrack: PlayerTrack | null;
@@ -163,8 +173,43 @@ export function getProgress(): PlaybackProgress {
 }
 
 
-let playGeneration = 0;
+function saveQueueSnapshot(): void {
+	if (typeof window === 'undefined' || state.queue.length === 0) return;
+	const snapshot: QueueSnapshot = {
+		queue: state.queue,
+		queueIndex: state.queueIndex,
+		savedAt: Date.now()
+	};
+	try {
+		localStorage.setItem(QUEUE_SNAPSHOT_KEY, JSON.stringify(snapshot));
+	} catch {
+		// 存储不可用时静默忽略
+	}
+}
 
+function restoreQueueSnapshot(): void {
+	if (typeof window === 'undefined' || state.queue.length > 0) return;
+	try {
+		const raw = localStorage.getItem(QUEUE_SNAPSHOT_KEY);
+		if (!raw) return;
+		const snapshot = JSON.parse(raw) as QueueSnapshot;
+		if (!Array.isArray(snapshot.queue) || snapshot.queue.length === 0) return;
+		if (Date.now() - snapshot.savedAt > QUEUE_SNAPSHOT_TTL) {
+			localStorage.removeItem(QUEUE_SNAPSHOT_KEY);
+			return;
+		}
+		const validIndex = snapshot.queueIndex >= 0 && snapshot.queueIndex < snapshot.queue.length ? snapshot.queueIndex : 0;
+		state.queue = snapshot.queue;
+		state.queueIndex = validIndex;
+		state.currentTrack = snapshot.queue[validIndex] ?? null;
+	} catch {
+		localStorage.removeItem(QUEUE_SNAPSHOT_KEY);
+	}
+}
+
+restoreQueueSnapshot();
+
+let playGeneration = 0;
 
 function initAudio(): void {
 	if (audio || typeof window === 'undefined') return;
@@ -534,6 +579,7 @@ export async function playSong(song: EmosSong, songList?: EmosSong[]): Promise<v
 
 	notifyState();
 	await playTrack(track);
+	saveQueueSnapshot();
 
 }
 
@@ -556,6 +602,7 @@ export async function playEmosTrack(track: PlayerTrack, trackList?: PlayerTrack[
 
 	notifyState();
 	await playTrack(track);
+	saveQueueSnapshot();
 }
 
 export async function togglePlay(): Promise<void> {
@@ -592,10 +639,12 @@ export async function skipPrevious(): Promise<void> {
 		state.queueIndex = prevIndex;
 		notifyState();
 		await playTrack(state.queue[prevIndex]);
+		saveQueueSnapshot();
 	} else if (state.queue.length > 0) {
 		state.queueIndex = state.queue.length - 1;
 		notifyState();
 		await playTrack(state.queue[state.queue.length - 1]);
+		saveQueueSnapshot();
 	}
 }
 
@@ -608,10 +657,12 @@ export async function skipNext(): Promise<void> {
 		state.queueIndex = nextIndex;
 		notifyState();
 		await playTrack(state.queue[nextIndex]);
+		saveQueueSnapshot();
 	} else if (state.repeatMode === 1 && state.queue.length > 0) {
 		state.queueIndex = 0;
 		notifyState();
 		await playTrack(state.queue[0]);
+		saveQueueSnapshot();
 	}
 }
 
@@ -636,6 +687,7 @@ export function toggleShuffle(): void {
 		shuffleQueue();
 	}
 	notifyState();
+	saveQueueSnapshot();
 }
 
 function shuffleQueue(): void {
@@ -688,6 +740,7 @@ export function removeFromQueue(index: number): void {
 		playTrack(state.queue[state.queueIndex]);
 	}
 	notifyState();
+	saveQueueSnapshot();
 }
 
 export function clearQueue(): void {
@@ -707,6 +760,9 @@ export function clearQueue(): void {
 	state.isPlaying = false;
 	notifyState();
 	notifyProgress();
+	if (typeof window !== 'undefined') {
+		try { localStorage.removeItem(QUEUE_SNAPSHOT_KEY); } catch { /* 忽略 */ }
+	}
 }
 
 export function seekTo(time: number): void {
