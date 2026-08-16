@@ -45,13 +45,6 @@ const ALLOWED_ORIGINS = new Set([
 ]);
 
 
-function getClientIP(request: Request, event: { getClientAddress: () => string }): string {
-	return request.headers.get('cf-connecting-ip')
-		|| request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-		|| event.getClientAddress();
-}
-
-
 function isOriginAllowed(request: Request): boolean {
 	const origin = request.headers.get('origin');
 	if (!origin) {
@@ -81,17 +74,6 @@ const myHandle: Handle = async ({ event, resolve }) => {
 		const { pathname } = event.url;
 		const env = (event.platform as Record<string, unknown> | undefined)?.env as Record<string, string> ?? {};
 		if (!resolvedSentryDsn && env.SENTRY_DSN) resolvedSentryDsn = env.SENTRY_DSN;
-
-	if (pathname === '/api/client-info') {
-		if (!isOriginAllowed(event.request)) {
-			return new Response('Forbidden', { status: 403 });
-		}
-		const ip = getClientIP(event.request, event);
-		const country = event.request.headers.get('cf-ipcountry') || '';
-		return new Response(JSON.stringify({ ip, country }), {
-			headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' }
-		});
-	}
 
 	if (pathname.startsWith('/api/')) {
 		if (!isOriginAllowed(event.request)) {
