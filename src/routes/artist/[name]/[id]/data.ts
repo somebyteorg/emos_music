@@ -23,11 +23,19 @@ export async function loadArtistData(id: number, pc: ReturnType<typeof createArt
 	}
 	pc.markLoaded();
 
-	const [artistData, albumData, topSongsResult] = await Promise.all([
-		getArtistDetail(id),
-		getArtistAlbums(id, 21),
-		getArtistTopSongs(id, 21)
-	]);
+	let artistData: EmosArtist;
+	let albumData: { albums: EmosArtistAlbum[] };
+	let topSongsResult: { songs: EmosSong[] };
+	try {
+		[artistData, albumData, topSongsResult] = await Promise.all([
+			getArtistDetail(id),
+			getArtistAlbums(id, 21),
+			getArtistTopSongs(id, 21)
+		]);
+	} catch (e) {
+		pc.invalidate();
+		throw e;
+	}
 
 	pc.set('artist', artistData);
 	pc.set('isInLibrary', artistData.isSub ?? false);

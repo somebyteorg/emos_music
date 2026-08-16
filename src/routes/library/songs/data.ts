@@ -27,6 +27,7 @@ export async function loadSongs(reset: boolean): Promise<void> {
 		pc.set('total', result.total);
 		pc.set('currentOffset', reset ? PAGINATION.DEFAULT_LIMIT : offset + PAGINATION.DEFAULT_LIMIT);
 	} catch (e) {
+		if (reset) pc.invalidate(); // 首次加载失败清除标记，重进可重试
 		console.warn('Failed to load liked songs:', e);
 		throw e;
 	}

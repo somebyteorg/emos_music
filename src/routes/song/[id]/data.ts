@@ -1,5 +1,5 @@
 import { getSongDetail, getLyric, parseSongCredits, parseLyricLines, getArtistDetail, getArtistAlbums } from '$lib/services/emos';
-import type { EmosSong, SongCredit, EmosLyricLine, EmosArtistAlbum } from '$lib/types/emos';
+import type { EmosSong, SongCredit, EmosLyricLine, EmosArtistAlbum, EmosLyric } from '$lib/types/emos';
 import { createPageCache } from '$lib/utils/page-cache-helper';
 
 interface CreditEntry {
@@ -35,10 +35,17 @@ export async function loadSongData(id: number, pc: ReturnType<typeof createSongC
 	}
 	pc.markLoaded();
 
-	const [songData, lyricData] = await Promise.all([
-		getSongDetail(id),
-		getLyric(id)
-	]);
+	let songData: EmosSong;
+	let lyricData: EmosLyric;
+	try {
+		[songData, lyricData] = await Promise.all([
+			getSongDetail(id),
+			getLyric(id)
+		]);
+	} catch (e) {
+		pc.invalidate();
+		throw e;
+	}
 
 	pc.set('song', songData);
 

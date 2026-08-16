@@ -25,7 +25,13 @@ export async function loadAlbumData(id: number, pc: ReturnType<typeof createAlbu
 	}
 	pc.markLoaded();
 
-	const albumData = await getAlbumDetail(id);
+	let albumData;
+	try {
+		albumData = await getAlbumDetail(id);
+	} catch (e) {
+		pc.invalidate();
+		throw e;
+	}
 	pc.set('album', albumData);
 	pc.set('isInLibrary', albumData.isSub ?? false);
 

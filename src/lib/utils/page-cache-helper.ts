@@ -1,4 +1,4 @@
-import { getPageData, setPageData, isPageLoaded, markPageLoaded, subscribePage } from '$lib/stores/page-cache';
+import { getPageData, setPageData, isPageLoaded, markPageLoaded, subscribePage, invalidatePage } from '$lib/stores/page-cache';
 
 export function createPageCache<T extends Record<string, unknown>>(key: string, defaults: T) {
 	const state: Record<string, unknown> = {};
@@ -23,6 +23,11 @@ export function createPageCache<T extends Record<string, unknown>>(key: string, 
 		markPageLoaded(key);
 	}
 
+	function invalidate(): void {
+		// 数据加载失败时清除 loaded 标记，避免后续进入页面永远命中脏缓存
+		invalidatePage(key);
+	}
+
 	function syncFromCache(): void {
 		for (const field of Object.keys(defaults)) {
 			state[field] = getPageData(key, field, defaults[field as keyof T]);
@@ -33,5 +38,5 @@ export function createPageCache<T extends Record<string, unknown>>(key: string, 
 		return subscribePage(key, fn);
 	}
 
-	return { get, set, loaded, markLoaded, syncFromCache, subscribe };
+	return { get, set, loaded, markLoaded, invalidate, syncFromCache, subscribe };
 }

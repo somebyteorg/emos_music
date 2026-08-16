@@ -174,6 +174,7 @@ export async function loadListData(
 			}
 		}
 	} catch (e) {
+		if (reset) pc.invalidate(); // 首次加载失败清除标记，重进可重试；分页失败保留已有数据
 		console.warn(`Failed to load ${type}:`, e);
 		throw e;
 	}

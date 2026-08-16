@@ -23,10 +23,15 @@ export async function loadPlaylistData(id: number, pc: ReturnType<typeof createP
 	}
 	pc.markLoaded();
 
-	const data = await getPlaylistDetail(id);
+	try {
+		const data = await getPlaylistDetail(id);
 
-	pc.set('playlist', data.playlist);
-	pc.set('isInLibrary', data.playlist.subscribed ?? false);
+		pc.set('playlist', data.playlist);
+		pc.set('isInLibrary', data.playlist.subscribed ?? false);
+	} catch (e) {
+		pc.invalidate(); // 失败清除标记，重试/重进可重新加载
+		throw e;
+	}
 }
 
 export async function togglePlaylistLibrary(playlist: PlaylistDetail, isInLibrary: boolean, cacheKey: string): Promise<boolean> {

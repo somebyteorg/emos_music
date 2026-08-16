@@ -26,6 +26,7 @@ export async function loadAlbums(reset: boolean): Promise<void> {
 		pc.set('hasMore', result.more);
 		pc.set('currentPage', reset ? 1 : pc.get('currentPage') + 1);
 	} catch (e) {
+		if (reset) pc.invalidate(); // 首次加载失败清除标记，重进可重试
 		console.warn('Failed to load library albums:', e);
 		throw e;
 	}
