@@ -112,6 +112,13 @@ interface EmosSignStatus {
 	user_id?: string;
 }
 
+interface EmosUserInfo {
+	user_id?: string;
+	username?: string;
+	pseudonym?: string;
+	avatar?: string;
+}
+
 const pendingRequests = new Map<string, Promise<unknown>>();
 
 function getOrigin(): string {
@@ -616,11 +623,28 @@ export async function getLoginStatus(): Promise<{
 	const hadToken = getEmosToken() !== '';
 	const sign = await request<EmosSignStatus>('/sign/check');
 	if (!sign.is_sign) return { code: 401, account: null, profile: null, hadToken };
+
+	// 拉取用户信息：名称优先笔名，无则用户名；同时带上真实头像。
+	// 失败时降级为 sign/check 的 user_id + 默认展示，不影响登录态。
+	let username = '';
+	let nickname = '';
+	let avatarUrl = '';
+	try {
+		const info = await request<EmosUserInfo>('/user');
+		username = info.username?.trim() || '';
+		nickname = info.pseudonym?.trim() || username;
+		avatarUrl = info.avatar ?? '';
+	} catch {
+		// user info 接口失败：保持默认值
+	}
+
 	const numericId = Number.parseInt((sign.user_id ?? '0').replace(/\D/g, '').slice(0, 9)) || 1;
+	username = username || (sign.user_id ?? 'emos');
+	nickname = nickname || 'EMOS 用户';
 	return {
 		code: 200,
-		account: { id: numericId, userName: sign.user_id ?? 'emos', nickname: 'EMOS 用户', vipType: 0 },
-		profile: { userId: numericId, nickname: 'EMOS 用户', avatarUrl: '', vipType: 0 },
+		account: { id: numericId, userName: username, nickname, vipType: 0 },
+		profile: { userId: numericId, nickname, avatarUrl, vipType: 0 },
 		hadToken
 	};
 }
