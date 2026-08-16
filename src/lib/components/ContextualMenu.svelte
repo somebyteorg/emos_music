@@ -60,6 +60,10 @@
 	let activeSubmenuKey: string | null = $state(null);
 	let activeSubmenuEl: HTMLElement | null = $state(null);
 	let focusedIndex: number = $state(-1);
+	// 菜单项按钮引用（按渲染索引），供键盘导航实际移动焦点
+	let itemBtnEls: Record<string, HTMLButtonElement> = $state({});
+	// 打开菜单前焦点所在元素（通常是触发器），关闭时归还
+	let triggerEl: HTMLElement | null = $state(null);
 
 	// 统一 portal：菜单打开时挂载到 body 顶层，避免被父容器
 	// （backdrop-filter / overflow / 定位上下文）裁剪，与原站 amp-contextual-menu 行为一致。
@@ -76,6 +80,25 @@
 		};
 	});
 
+	// 聚焦当前索引对应的菜单项（键盘导航的实际移动）
+	$effect(() => {
+		const idx = focusedIndex;
+		if (idx < 0) return;
+		const node = flatNodes()[idx];
+		const btn = node && itemBtnEls[itemKey(node.gi, node.ii)];
+		if (btn) btn.focus();
+	});
+
+	// 菜单打开：记录触发元素，聚焦第一个可用项
+	$effect(() => {
+		if (!clientPos) return;
+		if (!triggerEl && document.activeElement instanceof HTMLElement) {
+			triggerEl = document.activeElement;
+		}
+		const first = flatNodes().findIndex((n) => !n.item.disabled);
+		focusedIndex = first >= 0 ? first : -1;
+	});
+
 	// 菜单关闭时统一重置内部状态：避免子菜单展开态 / 键盘焦点 / 成功动画
 	// 残留到下次打开（所有调用点都只置 clientPos = null，重置收敛在此处）。
 	$effect(() => {
@@ -84,6 +107,10 @@
 		activeSubmenuEl = null;
 		focusedIndex = -1;
 		successfulIndex = null;
+		itemBtnEls = {};
+		const trigger = triggerEl;
+		triggerEl = null;
+		if (trigger && document.body.contains(trigger)) trigger.focus();
 	});
 
 	$effect(() => {
@@ -96,11 +123,11 @@
 		return `${gi}-${ii}`;
 	}
 
-	function flatItems(): MenuItem[] {
-		const result: MenuItem[] = [];
-		for (const group of items) {
-			for (const item of group.items) {
-				result.push(item);
+	function flatNodes(): { item: MenuItem; gi: number; ii: number }[] {
+		const result: { item: MenuItem; gi: number; ii: number }[] = [];
+		for (let gi = 0; gi < items.length; gi++) {
+			for (let ii = 0; ii < items[gi].items.length; ii++) {
+				result.push({ item: items[gi].items[ii], gi, ii });
 			}
 		}
 		return result;
@@ -195,6 +222,19 @@
 		}
 	}
 
+	function moveFocusBy(delta: number): void {
+		const nodes = flatNodes();
+		if (nodes.length === 0) return;
+		let next = focusedIndex;
+		for (let step = 0; step < nodes.length; step++) {
+			next = (next + delta + nodes.length) % nodes.length;
+			if (!nodes[next].item.disabled) break;
+		}
+		focusedIndex = next;
+		const btn = itemBtnEls[itemKey(nodes[next].gi, nodes[next].ii)];
+		btn?.focus();
+	}
+
 	function handleKeydown(e: KeyboardEvent): void {
 		if (e.key === 'Escape') {
 			if (activeSubmenuKey) {
@@ -204,13 +244,12 @@
 			}
 			return;
 		}
-		const flat = flatItems();
 		if (e.key === 'ArrowDown') {
 			e.preventDefault();
-			focusedIndex = (focusedIndex + 1) % flat.length;
+			moveFocusBy(1);
 		} else if (e.key === 'ArrowUp') {
 			e.preventDefault();
-			focusedIndex = (focusedIndex - 1 + flat.length) % flat.length;
+			moveFocusBy(-1);
 		}
 	}
 </script>
@@ -246,6 +285,7 @@
 							role="menuitem"
 						>
 							<button
+								bind:this={itemBtnEls[key]}
 								title={item.label}
 								disabled={item.disabled}
 								onclick={(e) => handleItemClick(item, gi, ii, e.currentTarget)}
