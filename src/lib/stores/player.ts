@@ -52,9 +52,21 @@ const progressListeners = new Set<ProgressListener>();
 let audio: HTMLAudioElement | null = null;
 let skipAborted = false;
 let switchingTrack = false;
+let retryTrackId: number | null = null;
 let rafId = 0;
 // scrobble removed - EMOS API does not support it
 let nextStreamCache: { trackId: number; url: string; timestamp: number } | null = null;
+let playUrlCache = new Map<number, { url: string; fetchedAt: number }>();
+const PLAY_URL_TTL = 5 * 60 * 1000; // 5 分钟，流媒体 URL 有实效
+const PLAY_URL_CACHE_MAX = 200;
+
+function cachePlayUrl(trackId: number, url: string): void {
+	if (playUrlCache.size >= PLAY_URL_CACHE_MAX) {
+		const oldestKey = playUrlCache.keys().next().value;
+		if (oldestKey !== undefined) playUrlCache.delete(oldestKey);
+	}
+	playUrlCache.set(trackId, { url, fetchedAt: Date.now() });
+}
 let preloadTriggered = false;
 let lastPreloadedNextId = 0;
 let lyricLines: EmosLyricLine[] = [];
@@ -321,9 +333,30 @@ function initAudio(): void {
 		state.isLoading = false;
 		state.isPlaying = false;
 		notifyState();
+		const track = state.currentTrack;
+		if (track?.emosId) {
+			const cached = playUrlCache.get(track.emosId);
+			if (cached) {
+				// 缓存的流 URL 可能过期：清除后重试一次当前曲
+				playUrlCache.delete(track.emosId);
+				retryTrackOnce(track);
+				return;
+			}
+		}
 		trySkipNext();
 	});
 
+}
+
+function retryTrackOnce(track: PlayerTrack): void {
+	if (retryTrackId === track.emosId) {
+		// 重试过一次仍失败，放弃并跳过
+		retryTrackId = null;
+		trySkipNext();
+		return;
+	}
+	retryTrackId = track.emosId;
+	playTrack(track);
 }
 
 function emosSongToTrack(song: EmosSong): PlayerTrack {
@@ -388,9 +421,19 @@ async function playTrack(track: PlayerTrack): Promise<void> {
 		nextStreamCache = null;
 	} else {
 		if (track.emosId) {
-			const url = await getSongPlayUrl(track.emosId);
-			if (skipAborted) return;
-			if (url) streamUrl = url;
+			const cached = playUrlCache.get(track.emosId);
+			if (cached && Date.now() - cached.fetchedAt < PLAY_URL_TTL) {
+				streamUrl = cached.url;
+			} else {
+				const url = await getSongPlayUrl(track.emosId);
+				if (skipAborted) return;
+				if (url) {
+					streamUrl = url;
+					cachePlayUrl(track.emosId, url);
+				} else {
+					playUrlCache.delete(track.emosId);
+				}
+			}
 		}
 	}
 
