@@ -55,6 +55,16 @@
 		};
 	});
 
+	// 菜单关闭时统一重置内部状态：避免子菜单展开态 / 键盘焦点 / 成功动画
+	// 残留到下次打开（所有调用点都只置 clientPos = null，重置收敛在此处）。
+	$effect(() => {
+		if (clientPos) return;
+		activeSubmenuKey = null;
+		activeSubmenuEl = null;
+		focusedIndex = -1;
+		successfulIndex = null;
+	});
+
 	$effect(() => {
 		const scrollEl = document.querySelector('.scrollable-page');
 		if (!scrollEl) return;
