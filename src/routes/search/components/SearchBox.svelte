@@ -23,6 +23,8 @@
 	let focusedIndex = $state(-1);
 	let loading = $state(false);
 	let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+	// 搜索竞态保护：快速输入/切换 scope 时，过期响应丢弃（不覆盖新结果）
+	let searchSeq = 0;
 	let isComposing = $state(false);
 	let containerEl: HTMLElement | null = $state(null);
 	let lastUrlQuery = '';
@@ -122,6 +124,7 @@
 		if (debounceTimer) clearTimeout(debounceTimer);
 		const trimmed = query.trim();
 		if (!trimmed) {
+			searchSeq++; // 使在途建议请求作废
 			suggestions = null;
 			cachedSuggestions = null;
 			showSuggestions = false;
@@ -135,6 +138,7 @@
 			return;
 		}
 		if (scope !== 'searchInCatalog') {
+			searchSeq++; // 切换搜索范围，作废在途请求
 			suggestions = null;
 			cachedSuggestions = null;
 			showSuggestions = false;
@@ -142,6 +146,7 @@
 			return;
 		}
 		debounceTimer = setTimeout(async () => {
+			const seq = ++searchSeq;
 			loading = true;
 			try {
 				const cached = suggestCache.get(trimmed);
@@ -159,15 +164,17 @@
 					const firstKey = suggestCache.keys().next().value;
 					if (firstKey !== undefined) suggestCache.delete(firstKey);
 				}
+				if (seq !== searchSeq) return; // 过期响应：已写 cache，但不动 UI
 				lastQuery = trimmed;
 				suggestions = result;
 				showSuggestions = true;
 				focusedIndex = -1;
 			} catch (e) {
+				if (seq !== searchSeq) return;
 				console.warn('Failed to load search suggestions:', e);
 				suggestions = null;
 			} finally {
-				loading = false;
+				if (seq === searchSeq) loading = false;
 			}
 		}, 300);
 	}
