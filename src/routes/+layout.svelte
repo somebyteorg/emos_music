@@ -11,7 +11,7 @@
 
 	import { setScrollPosition, getScrollPosition } from '$lib/stores/page-cache';
 	import { bootstrapEmosAuth, setEmosToken } from '$lib/stores/emos-auth';
-	import { getState as getPlayerState } from '$lib/stores/player';
+	import { getState as getPlayerState, subscribe as subscribePlayer } from '$lib/stores/player';
 	let { children }: { children: Snippet } = $props();
 	let isLoading = $derived($navigating !== null);
 
@@ -70,10 +70,17 @@
 		return () => { window.removeEventListener('beforeunload', handler); };
 	});
 
+	// 新版本刷新：播放中不强制中断，等空闲（暂停/停止）再刷新
+	let pendingReload = false;
 	$effect(() => {
-		if ($updated) {
-			location.reload();
-		}
+		if ($updated) pendingReload = true;
+		const unsub = subscribePlayer((s) => {
+			if (pendingReload && !s.isPlaying && !s.isLoading && $updated) {
+				pendingReload = false;
+				location.reload();
+			}
+		});
+		return unsub;
 	});
 
 	beforeNavigate(() => {
