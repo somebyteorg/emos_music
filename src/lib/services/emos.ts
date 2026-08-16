@@ -627,14 +627,6 @@ export async function bootstrapEmosSession(): Promise<{ init: unknown; status: R
 	return { init: null, status };
 }
 
-export async function logout(): Promise<void> {
-	resetSession();
-}
-
-export function getCurrentEmosUserId(): number {
-	return getEmosUser()?.id ?? 0;
-}
-
 // --- Homepage types (legacy compatibility) ---
 
 export interface HomepageResource {
