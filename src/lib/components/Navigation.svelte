@@ -109,9 +109,15 @@
 		closeUserMenu();
 	}
 
+	function handleSettings(): void {
+		closeUserMenu();
+		window.open('https://emos.club/account', '_blank', 'noopener,noreferrer');
+	}
+
 	let userMenuItems = $derived([
 		{
 			items: [
+				{ label: '设置', icon: ICONS.SETTINGS_GEAR, action: handleSettings },
 				{ label: '退出登录', action: handleLogout }
 			]
 		}
