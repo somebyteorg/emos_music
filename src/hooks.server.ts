@@ -136,7 +136,7 @@ const myHandle: Handle = async ({ event, resolve }) => {
 		headers.set('Cache-Control', 'no-cache');
 	}
 	if (!pathname.startsWith('/api/')) {
-		headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self' https://o4511699213156352.ingest.us.sentry.io; font-src 'self'; media-src 'self' https:; frame-ancestors 'none'");
+		headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self' https://o4511699213156352.ingest.us.sentry.io; font-src 'self'; media-src 'self' https:; frame-ancestors 'none'");
 	}
 
 		return new Response(response.body, {

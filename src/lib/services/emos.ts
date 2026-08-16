@@ -323,6 +323,12 @@ export function getArtworkUrl(picUrl: string, size = 68, height?: number): strin
 	if (cleanUrl.includes('image.theotherdb.org/original/')) {
 		return cleanUrl.replace('/original/', `/w${Math.max(size, height ?? size)}/`);
 	}
+	const match = cleanUrl.match(/^https?:\/\/[a-z0-9-]+\.music\.126\.net\//);
+	if (match) {
+		const h = height ?? size;
+		const sep = cleanUrl.includes('?') ? '&' : '?';
+		return cleanUrl + `${sep}param=${size}x${h}`;
+	}
 	return cleanUrl;
 }
 

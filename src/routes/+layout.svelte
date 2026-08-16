@@ -96,6 +96,9 @@
 
 <svelte:head>
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+	<link rel="preconnect" href="https://p1.music.126.net" crossorigin="anonymous" />
+	<link rel="preconnect" href="https://p2.music.126.net" crossorigin="anonymous" />
+	<link rel="preconnect" href="https://image.theotherdb.org" crossorigin="anonymous" />
 </svelte:head>
 
 <div class="app-container">
