@@ -351,14 +351,27 @@ export async function getSongPlayUrl(id: number): Promise<string | null> {
 
 // --- Lyric APIs ---
 
+const lyricCache = new Map<number, { data: EmosLyric; fetchedAt: number }>();
+const LYRIC_CACHE_TTL = 12 * 60 * 60 * 1000; // 12 小时
+
 export async function getLyric(id: number): Promise<EmosLyric> {
+	const cached = lyricCache.get(id);
+	if (cached && Date.now() - cached.fetchedAt < LYRIC_CACHE_TTL) {
+		return cached.data;
+	}
 	const lyrics = await request<EmosLyricRaw[]>(`/music/song/${id}/lyric/list`);
 	const lrc = lyrics.find((item) => item.type === 'lrc') ?? lyrics.find((item) => item.type === 'qrc') ?? lyrics[0];
-	return {
+	const data: EmosLyric = {
 		lrc: lrc ? { lyric: lrc.content } : undefined,
 		yrc: lyrics.find((item) => item.type === 'qrc') ? { lyric: lyrics.find((item) => item.type === 'qrc')!.content } : undefined,
 		code: 200
 	};
+	lyricCache.set(id, { data, fetchedAt: Date.now() });
+	if (lyricCache.size > 500) {
+		const oldestKey = lyricCache.keys().next().value;
+		if (oldestKey !== undefined) lyricCache.delete(oldestKey);
+	}
+	return data;
 }
 
 export function parseLyricLines(lrcLyric: string, tlyricLyric?: string): EmosLyricLine[] {
