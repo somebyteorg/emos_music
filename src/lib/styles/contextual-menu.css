@@ -1,4 +1,5 @@
-amp-contextual-menu {
+amp-contextual-menu,
+.contextual-menu-portal {
     --ctxmenu-item-bg: var(--systemStandardThickMaterialSover-default_IC);
     --ctxmenu-item-bg-hover: var(--systemQuinary);
     --borderRule: var(--labelDivider);
@@ -6,6 +7,9 @@ amp-contextual-menu {
     --ctxmenu-z-index: var(--z-contextual-menus);
     --ctxmenu-scrim-z-index: calc(var(--z-contextual-menus) - 1);
     --keyColor-focus-color: rgba(var(--keyColor-rgb), .6);
+}
+
+amp-contextual-menu {
     position: relative;
 }
 

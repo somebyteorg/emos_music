@@ -13,6 +13,7 @@
 		hideIconOnTransition?: boolean;
 		closeAfter?: number;
 		icon?: string;
+		iconTransform?: string;
 		disabled?: boolean;
 		action?: () => void;
 		menuOpenOnClick?: boolean;
@@ -33,10 +34,26 @@
 	}: Props = $props();
 
 	let menuEl: HTMLDivElement | null = $state(null);
+	let rootEl: HTMLDivElement | null = $state(null);
 	let successfulIndex: string | null = $state(null);
 	let activeSubmenuKey: string | null = $state(null);
 	let activeSubmenuEl: HTMLElement | null = $state(null);
 	let focusedIndex: number = $state(-1);
+
+	// 统一 portal：菜单打开时挂载到 body 顶层，避免被父容器
+	// （backdrop-filter / overflow / 定位上下文）裁剪，与原站 amp-contextual-menu 行为一致。
+	$effect(() => {
+		if (!clientPos || !rootEl) return;
+		const portal = document.createElement('div');
+		portal.className = 'contextual-menu-portal';
+		portal.style.setProperty('--ctxmenu-z-index', 'var(--z-contextual-menus)');
+		portal.style.setProperty('--ctxmenu-scrim-z-index', 'calc(var(--z-contextual-menus) - 1)');
+		document.body.appendChild(portal);
+		portal.appendChild(rootEl);
+		return () => {
+			portal.remove();
+		};
+	});
 
 	$effect(() => {
 		const scrollEl = document.querySelector('.scrollable-page');
@@ -178,7 +195,8 @@
 </script>
 
 {#if clientPos}
-	<div class="contextual-menu__overlay" role="menu" onkeydown={handleKeydown}>
+	<div bind:this={rootEl}>
+		<div class="contextual-menu__overlay" role="menu" onkeydown={handleKeydown}>
 		<button class="contextual-menu-scrim" onclick={onclose} aria-label="关闭">关闭</button>
 		<div
 			class="contextual-menu"
@@ -228,7 +246,7 @@
 											class:contextual-menu-item__icon-container--hide={isSuccessful && item.hideIconOnTransition}
 										>
 											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="context-menu__option-icon">
-												<path d={item.icon}></path>
+												<path d={item.icon} transform={item.iconTransform}></path>
 											</svg>
 										</span>
 									{/if}
@@ -280,7 +298,7 @@
 																{#if subItem.icon}
 																	<span class="contextual-menu-item__icon-container">
 																		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="context-menu__option-icon">
-																			<path d={subItem.icon}></path>
+																			<path d={subItem.icon} transform={subItem.iconTransform}></path>
 																		</svg>
 																	</span>
 																{/if}
@@ -297,6 +315,7 @@
 					{/each}
 				{/each}
 			</ul>
+		</div>
 		</div>
 	</div>
 {/if}

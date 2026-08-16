@@ -117,7 +117,7 @@
 	let userMenuItems = $derived([
 		{
 			items: [
-				{ label: '设置', icon: ICONS.SETTINGS_GEAR, action: handleSettings },
+				{ label: '设置', icon: ICONS.SETTINGS_GEAR, iconTransform: ICONS.SETTINGS_GEAR_TRANSFORM, action: handleSettings },
 				{ label: '退出登录', action: handleLogout }
 			]
 		}
