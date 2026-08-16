@@ -192,6 +192,16 @@ export function canWebShare(url?: string): boolean {
 	return typeof navigator.share === 'function';
 }
 
+function copyToClipboard(url: string): void {
+	const ta = document.createElement('textarea');
+	ta.value = url;
+	ta.style.cssText = 'position:fixed;opacity:0';
+	document.body.appendChild(ta);
+	ta.select();
+	document.execCommand('copy');
+	document.body.removeChild(ta);
+}
+
 export function createShareCopyMenu(urlFn: () => string, extraItems?: MenuItemDef[]): MenuGroupDef[] {
 	const canShare = canWebShare();
 	const items: MenuItemDef[] = [];
@@ -206,23 +216,9 @@ export function createShareCopyMenu(urlFn: () => string, extraItems?: MenuItemDe
 	items.push({ label: '拷贝链接', icon: ICONS.LINK, afterLabel: '已拷贝链接', hideIconOnTransition: true, closeAfter: 1000, action: () => {
 		const url = urlFn();
 		if (navigator.clipboard?.writeText) {
-			navigator.clipboard.writeText(url).catch(() => {
-				const ta = document.createElement('textarea');
-				ta.value = url;
-				ta.style.cssText = 'position:fixed;opacity:0';
-				document.body.appendChild(ta);
-				ta.select();
-				document.execCommand('copy');
-				document.body.removeChild(ta);
-			});
+			navigator.clipboard.writeText(url).catch(() => copyToClipboard(url));
 		} else {
-			const ta = document.createElement('textarea');
-			ta.value = url;
-			ta.style.cssText = 'position:fixed;opacity:0';
-			document.body.appendChild(ta);
-			ta.select();
-			document.execCommand('copy');
-			document.body.removeChild(ta);
+			copyToClipboard(url);
 		}
 	} });
 	return [{ items }];
