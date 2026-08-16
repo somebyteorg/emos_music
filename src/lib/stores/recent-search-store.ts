@@ -42,13 +42,6 @@ export function addRecentSearch(item: RecentSearchItem): void {
 	saveToStorage(updated);
 }
 
-export function removeRecentSearch(type: string, id: number): void {
-	const items = getRecentSearches();
-	const updated = items.filter(i => !(i.type === type && i.id === id));
-	memoryItems = updated;
-	saveToStorage(updated);
-}
-
 export function clearRecentSearches(): void {
 	memoryItems = [];
 	localStorage.removeItem(STORAGE_KEY);

@@ -1,4 +1,4 @@
-import { getArtworkUrl, getAlbumDetail, getPlaylistDetail, getSongPlayUrl, likeSong, getLyric, parseLyricLines } from '$lib/services/emos';
+import { getArtworkUrl, getAlbumDetail, getPlaylistDetail, getSongPlayUrl, getLyric, parseLyricLines } from '$lib/services/emos';
 import { ARTWORK_SIZE } from '$lib/utils/constants';
 import type { EmosSong, EmosLyricLine } from '$lib/types/emos';
 
@@ -630,28 +630,6 @@ export async function playSong(song: EmosSong, songList?: EmosSong[]): Promise<v
 
 }
 
-export async function playEmosTrack(track: PlayerTrack, trackList?: PlayerTrack[]): Promise<void> {
-	if (!canPlay()) return;
-	initAudio();
-
-	if (trackList && trackList.length > 0) {
-		state.queue = [...trackList];
-		state.queueIndex = trackList.findIndex(t => t.emosId === track.emosId);
-		if (state.queueIndex === -1) state.queueIndex = 0;
-	} else {
-		state.queue = [track];
-		state.queueIndex = 0;
-	}
-
-	if (state.isShuffled) {
-		shuffleQueue();
-	}
-
-	notifyState();
-	await playTrack(track);
-	saveQueueSnapshot();
-}
-
 export async function togglePlay(): Promise<void> {
 	initAudio();
 	if (!audio) return;
@@ -842,29 +820,6 @@ export function seekToThrottled(time: number): void {
 		pendingSeekTime = null;
 		if (t !== null) seekTo(t);
 	});
-}
-
-export function isAudioPlaying(): boolean {
-	if (!audio) return false;
-	return !audio.paused && !audio.ended;
-}
-
-export async function toggleLikeCurrentTrack(): Promise<void> {
-	const track = state.currentTrack;
-	if (!track || !track.emosId) return;
-	const newLiked = !track.isLiked;
-	try {
-		const ok = await likeSong(track.emosId, newLiked);
-		if (ok) {
-			track.isLiked = newLiked;
-			if (state.queueIndex >= 0 && state.queueIndex < state.queue.length) {
-				state.queue[state.queueIndex].isLiked = newLiked;
-			}
-			notifyState();
-		}
-	} catch {
-		console.warn('Failed to toggle like for track', track.title);
-	}
 }
 
 // FM mode removed - EMOS API does not support personalized FM

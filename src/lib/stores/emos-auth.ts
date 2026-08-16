@@ -1,4 +1,4 @@
-import { bootstrapEmosSession, getLoginStatus, resetSession } from '$lib/services/emos';
+import { bootstrapEmosSession, resetSession } from '$lib/services/emos';
 
 export interface EmosUser {
 	id: number;
@@ -68,36 +68,12 @@ export function getEmosUser(): EmosUser | null {
 	return currentUser;
 }
 
-export function getEmosCookie(): string {
-	return currentToken;
-}
-
 export function getEmosToken(): string {
 	return currentToken;
 }
 
 export function isEmosLoggedIn(): boolean {
 	return currentUser !== null;
-}
-
-export function isEmosVip(): boolean {
-	if (!currentUser) return false;
-	return (currentUser.vipType ?? 0) >= 10;
-}
-
-export function setEmosUser(user: EmosUser | null): void {
-	currentUser = user;
-	currentToken = user?.token ?? currentToken;
-	if (!user) {
-		currentToken = '';
-		if (typeof document !== 'undefined') document.cookie = 'emos_session=; path=/; max-age=0';
-	}
-	saveToStorage();
-	notify();
-}
-
-export function setEmosCookie(cookie: string): void {
-	setEmosToken(cookie);
 }
 
 export function setEmosToken(token: string): void {
@@ -145,16 +121,6 @@ export async function bootstrapEmosAuth(): Promise<void> {
 	} catch {
 		console.warn('Emos auth bootstrap failed');
 		if (currentUser) clearEmosAuth();
-	}
-}
-
-export async function validateEmosAuth(): Promise<void> {
-	try {
-		const result = await getLoginStatus();
-		applyLoginStatus(result);
-	} catch {
-		console.warn('Emos auth validation failed, clearing local state');
-		clearEmosAuth();
 	}
 }
 
