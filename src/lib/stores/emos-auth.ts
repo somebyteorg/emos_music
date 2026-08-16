@@ -117,10 +117,14 @@ function applyLoginStatus(result: {
 export async function bootstrapEmosAuth(): Promise<void> {
 	try {
 		const result = await bootstrapEmosSession();
-		applyLoginStatus(result.status);
+		const status = result.status;
+		// 请求未携带 token 时，后端必然返回 is_sign:false，不代表本地凭据失效，
+		// 不可据此清空已恢复的本地会话（防止刷新/HMR 竞态导致登录态被反复清除）
+		if (!status.profile && !status.hadToken) return;
+		applyLoginStatus(status);
 	} catch {
-		console.warn('Emos auth bootstrap failed');
-		if (currentUser) clearEmosAuth();
+		// 验证请求失败（网络/超时）：保留本地登录态乐观恢复，不清空。
+		console.warn('Emos auth bootstrap failed, keeping local session');
 	}
 }
 

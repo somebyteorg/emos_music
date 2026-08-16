@@ -611,14 +611,17 @@ export async function getLoginStatus(): Promise<{
 	code: number;
 	account: { id: number; userName: string; nickname: string; vipType?: number } | null;
 	profile: { nickname: string; avatarUrl: string; userId: number; vipType?: number } | null;
+	hadToken: boolean;
 }> {
+	const hadToken = getEmosToken() !== '';
 	const sign = await request<EmosSignStatus>('/sign/check');
-	if (!sign.is_sign) return { code: 401, account: null, profile: null };
+	if (!sign.is_sign) return { code: 401, account: null, profile: null, hadToken };
 	const numericId = Number.parseInt((sign.user_id ?? '0').replace(/\D/g, '').slice(0, 9)) || 1;
 	return {
 		code: 200,
 		account: { id: numericId, userName: sign.user_id ?? 'emos', nickname: 'EMOS 用户', vipType: 0 },
-		profile: { userId: numericId, nickname: 'EMOS 用户', avatarUrl: '', vipType: 0 }
+		profile: { userId: numericId, nickname: 'EMOS 用户', avatarUrl: '', vipType: 0 },
+		hadToken
 	};
 }
 
