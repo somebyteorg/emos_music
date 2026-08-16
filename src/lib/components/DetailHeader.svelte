@@ -74,9 +74,9 @@
 			<div class="artwork__contrast-gradient"></div>
 			<div class="artwork__main artwork__main--square" class:artwork__main--circle={isCircle}>
 				<div class="artwork-component artwork-component--aspect-ratio artwork-component--orientation-square artwork-component--has-borders" class:artwork-component--circle={isCircle}>
-					<img alt="" class="artwork-component__image" loading="lazy"
+					<img alt="" class="artwork-component__image"
 						src={artworkUrl}
-						role="presentation" decoding="async" />
+						role="presentation" decoding="async" fetchpriority="high" />
 				</div>
 				{#if !isCircle}
 					<div class="artwork__base-stroke"></div>
