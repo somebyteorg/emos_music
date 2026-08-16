@@ -621,7 +621,18 @@ export async function getLoginStatus(): Promise<{
 	hadToken: boolean;
 }> {
 	const hadToken = getEmosToken() !== '';
-	const sign = await request<EmosSignStatus>('/sign/check');
+	// sign/check 与 /user 并行：登录恢复少一个串行 RTT。
+	// 无 token 时 /user 必然失败，不发送；有 token 时即使 sign 失败，
+	// /user 结果也会被忽略，不影响语义。
+	const [sign, infoResult] = await Promise.all([
+		request<EmosSignStatus>('/sign/check'),
+		hadToken
+			? request<EmosUserInfo>('/user').then(
+					(info) => ({ ok: true as const, info }),
+					() => ({ ok: false as const, info: null })
+				)
+			: Promise.resolve({ ok: false as const, info: null })
+	]);
 	if (!sign.is_sign) return { code: 401, account: null, profile: null, hadToken };
 
 	// 拉取用户信息：名称优先笔名，无则用户名；同时带上真实头像。
@@ -629,13 +640,10 @@ export async function getLoginStatus(): Promise<{
 	let username = '';
 	let nickname = '';
 	let avatarUrl = '';
-	try {
-		const info = await request<EmosUserInfo>('/user');
-		username = info.username?.trim() || '';
-		nickname = info.pseudonym?.trim() || username;
-		avatarUrl = info.avatar ?? '';
-	} catch {
-		// user info 接口失败：保持默认值
+	if (infoResult.ok) {
+		username = infoResult.info.username?.trim() || '';
+		nickname = infoResult.info.pseudonym?.trim() || username;
+		avatarUrl = infoResult.info.avatar ?? '';
 	}
 
 	const numericId = Number.parseInt((sign.user_id ?? '0').replace(/\D/g, '').slice(0, 9)) || 1;

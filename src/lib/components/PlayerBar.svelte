@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, tick } from 'svelte';
+	import { tick } from 'svelte';
 	import { goto } from '$app/navigation';
 	import '$lib/styles/playback-controls.css';
 	import '$lib/styles/player-lcd.css';
@@ -128,33 +128,6 @@
 			return `${window.location.origin}/song/${track.emosId}`;
 		}, playerState.currentTrack ? [{ label: '查看制作人员', icon: ICONS.CREDITS, action: () => { const track = playerState.currentTrack; if (track) goto(`/song/${track.emosId}`); } }] : undefined)
 	);
-
-	let portalEl: HTMLElement | null = $state(null);
-	let menuContainer: HTMLElement | undefined = $state();
-
-	$effect(() => {
-		if (menuContainer && portalEl) {
-			const container = menuContainer;
-			const portal = portalEl;
-			portal.appendChild(container);
-			return () => {
-				if (container.parentNode === portal) {
-					portal.removeChild(container);
-				}
-			};
-		}
-	});
-
-	onMount(() => {
-		portalEl = document.createElement('div');
-		portalEl.className = 'player-menu-portal';
-		portalEl.style.setProperty('--ctxmenu-z-index', 'var(--z-contextual-menus)');
-		portalEl.style.setProperty('--ctxmenu-scrim-z-index', 'calc(var(--z-contextual-menus) - 1)');
-		document.body.appendChild(portalEl);
-		return () => {
-			portalEl?.remove();
-		};
-	});
 
 	$effect(() => {
 		const unsub1 = subscribeEmosAuth((user) => {
@@ -717,10 +690,8 @@
 	onOpenQueueItemMenu={openQueueItemMenu}
 />
 
-<div bind:this={menuContainer}>
-	<ContextualMenu items={playerMenuItems} clientPos={playerMenu.clientPos} onclose={playerMenu.close} />
-	<ContextualMenu items={queueItemMenuItems} clientPos={queueItemMenu.clientPos} onclose={queueItemMenu.close} />
-</div>
+<ContextualMenu items={playerMenuItems} clientPos={playerMenu.clientPos} onclose={playerMenu.close} />
+<ContextualMenu items={queueItemMenuItems} clientPos={queueItemMenu.clientPos} onclose={queueItemMenu.close} />
 
 {#if FullPlayerComponent}
 	<FullPlayerComponent bind:this={fullPlayerRef} onClose={() => { fullPlayerOpen = false; }} />
