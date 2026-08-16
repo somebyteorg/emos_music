@@ -5,7 +5,7 @@
 	import {
 		subscribe, subscribeProgress, getState, getProgress,
 		togglePlay, skipPrevious, skipNext, toggleShuffle, cycleRepeat,
-		seekTo, getCurrentTime, removeFromQueue, playQueueItem
+		seekTo, seekToThrottled, getCurrentTime, removeFromQueue, playQueueItem
 	} from '$lib/stores/player';
 	import type { PlayerState, PlaybackProgress } from '$lib/stores/player';
 	import type { LyricsScene } from '$lib/utils/lyrics-scene';
@@ -589,7 +589,7 @@
 		if (!scrubber || playbackDuration <= 0) return;
 		const rect = scrubber.getBoundingClientRect();
 		const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-		seekTo(ratio * playbackDuration);
+		seekToThrottled(ratio * playbackDuration);
 	}
 
 	function seekFromTouchEvent(e: TouchEvent): void {
@@ -599,7 +599,7 @@
 		const touch = e.touches[0] ?? e.changedTouches[0];
 		if (!touch) return;
 		const ratio = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
-		seekTo(ratio * playbackDuration);
+		seekToThrottled(ratio * playbackDuration);
 	}
 
 	export { open, close, openInstant, closeInstant };

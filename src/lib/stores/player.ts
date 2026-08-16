@@ -824,6 +824,22 @@ export function getCurrentTime(): number {
 	return audio.currentTime;
 }
 
+// 拖动进度条专用：rAF 合并高频 seek，UI 即时反馈，audio.seek 每帧最多一次
+let pendingSeekTime: number | null = null;
+let seekRafId = 0;
+
+export function seekToThrottled(time: number): void {
+	if (!isFinite(time)) return;
+	pendingSeekTime = time;
+	if (seekRafId) return;
+	seekRafId = requestAnimationFrame(() => {
+		seekRafId = 0;
+		const t = pendingSeekTime;
+		pendingSeekTime = null;
+		if (t !== null) seekTo(t);
+	});
+}
+
 export function isAudioPlaying(): boolean {
 	if (!audio) return false;
 	return !audio.paused && !audio.ended;

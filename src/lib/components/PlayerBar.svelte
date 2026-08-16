@@ -7,7 +7,7 @@
 	import '$lib/styles/interactive-buttons.css';
 	import '$lib/styles/play-more-buttons.css';
 	import { PLAYER, ICONS, createShareCopyMenu } from '$lib/utils/constants';
-	import { subscribe, subscribeProgress, getState, getProgress, togglePlay, skipPrevious, skipNext, toggleShuffle, cycleRepeat, setVolume, playQueueItem, clearQueue, seekTo, removeFromQueue } from '$lib/stores/player';
+	import { subscribe, subscribeProgress, getState, getProgress, togglePlay, skipPrevious, skipNext, toggleShuffle, cycleRepeat, setVolume, playQueueItem, clearQueue, seekTo, seekToThrottled, removeFromQueue } from '$lib/stores/player';
 	import type { PlayerState, PlaybackProgress } from '$lib/stores/player';
 	import { formatDuration } from '$lib/utils/format';
 	import { isEmosLoggedIn, subscribeEmosAuth } from '$lib/stores/emos-auth';
@@ -457,7 +457,7 @@
 		if (!scrubber || playbackDuration <= 0) return;
 		const rect = scrubber.getBoundingClientRect();
 		const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-		seekTo(ratio * playbackDuration);
+		seekToThrottled(ratio * playbackDuration);
 	}
 </script>
 
