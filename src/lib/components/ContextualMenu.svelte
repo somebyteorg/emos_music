@@ -2,6 +2,27 @@
 	import '$lib/styles/contextual-menu.css';
 	import { ICONS } from '$lib/utils/constants';
 
+	// 模块级滚动锁：多个 ContextualMenu 实例（如 PlayerBar 的双菜单）同时存活时，
+	// 各自独立 set/remove aria-hidden 会互相覆盖，先关的实例会把后开实例的
+	// 滚动锁误解除。引用计数保证：最后一个实例关闭才真正解锁。
+	let scrollLockCount = 0;
+
+	function lockScroll(): void {
+		scrollLockCount += 1;
+		if (scrollLockCount > 1) return;
+		const scrollEl = document.querySelector('.scrollable-page');
+		if (scrollEl) scrollEl.setAttribute('aria-hidden', 'true');
+		document.body.classList.add('contextual-menu-open');
+	}
+
+	function unlockScroll(): void {
+		scrollLockCount = Math.max(0, scrollLockCount - 1);
+		if (scrollLockCount > 0) return;
+		const scrollEl = document.querySelector('.scrollable-page');
+		if (scrollEl) scrollEl.removeAttribute('aria-hidden');
+		document.body.classList.remove('contextual-menu-open');
+	}
+
 	type MenuGroup = {
 		title?: string;
 		items: MenuItem[];
@@ -66,19 +87,9 @@
 	});
 
 	$effect(() => {
-		const scrollEl = document.querySelector('.scrollable-page');
-		if (!scrollEl) return;
-		if (clientPos) {
-			scrollEl.setAttribute('aria-hidden', 'true');
-			document.body.classList.add('contextual-menu-open');
-		} else {
-			scrollEl.removeAttribute('aria-hidden');
-			document.body.classList.remove('contextual-menu-open');
-		}
-		return () => {
-			scrollEl.removeAttribute('aria-hidden');
-			document.body.classList.remove('contextual-menu-open');
-		};
+		if (!clientPos) return;
+		lockScroll();
+		return () => unlockScroll();
 	});
 
 	function itemKey(gi: number, ii: number): string {
