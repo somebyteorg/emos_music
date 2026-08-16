@@ -92,6 +92,7 @@ async function preloadNextTrack(fromIndex?: number, retryCount = 0): Promise<voi
 	const MAX_RETRIES = 3;
 	const RETRY_DELAY = 2000;
 	const startIndex = fromIndex ?? (state.queueIndex + 1);
+	const genAtStart = playGeneration;
 	let nextTrack: PlayerTrack | null = null;
 	let nextTrackIndex = -1;
 
@@ -111,12 +112,15 @@ async function preloadNextTrack(fromIndex?: number, retryCount = 0): Promise<voi
 			const url = await getSongPlayUrl(nextTrack.emosId);
 			if (url) streamUrl = url;
 		}
+		// 请求期间用户可能切歌/改队列：generation 变化则丢弃结果，不写 stale URL
+		if (genAtStart !== playGeneration) return;
 		if (streamUrl) {
 			nextStreamCache = { trackId: nextTrack.emosId, url: streamUrl, timestamp: Date.now() };
 		} else if (nextTrackIndex + 1 < state.queue.length) {
 			preloadNextTrack(nextTrackIndex + 1, 0);
 		}
 	} catch {
+		if (genAtStart !== playGeneration) return;
 		nextStreamCache = null;
 		if (retryCount < MAX_RETRIES) {
 			setTimeout(() => preloadNextTrack(fromIndex, retryCount + 1), RETRY_DELAY);
